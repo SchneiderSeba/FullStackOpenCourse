@@ -1,14 +1,17 @@
 /* eslint-disable react/prop-types */
+import { DeleteBtn } from "./DeleteBtn"
 
-export function Persons ({ persons }) {
+
+export function Persons ({ persons, handleDelete }) {
+
+
     return(
         <ul style={{listStyle: 'none'}}>
-            {persons.map((persons) =>
-            <li key={persons.id}>
-                <p><span style={{color: "yellow"}}>{persons.name}</span> {persons.number}</p>
+            {persons.map((person) =>
+            <li key={person.id}>
+                <p><span style={{color: "yellow"}}>{person.name}</span> {person.number} <DeleteBtn handleDelete={() => handleDelete(person.id)}/></p>
             </li>
-                
-)}
+            )}
         </ul>
     )
 }

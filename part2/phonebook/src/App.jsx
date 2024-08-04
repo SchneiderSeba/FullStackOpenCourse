@@ -3,17 +3,13 @@ import { useState, useEffect } from 'react'
 import { Persons } from './Persons'
 import { Form } from './Form'
 import { Filter } from './Filter'
-import axios from 'axios'
+import crud from './crud'
 
 
 
 const App = () => {
 
-  useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {setPersons(response.data)})
-  }, [])
+  
 
   const [persons, setPersons] = useState([]) 
 
@@ -22,6 +18,12 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('debug')
 
   const [search, setSearch] = useState('')
+
+  useEffect(() => {
+    crud
+      .getAll()
+      .then(response => {setPersons(response.data)})
+  }, [])
 
 
   const handleChangeName = (e) => {
@@ -41,8 +43,13 @@ const handleSubmit = (e) => {
 
     const maxId = persons.length > 0 ? Math.max(...persons.map(person => person.id)) : 0
     const newId = maxId + 1
+    const strId = newId.toString()
 
-    setPersons(prevPersons => [...prevPersons, {name: newName, number: newNumber, id: newId}])
+    crud
+      .create( {name: newName, number: newNumber, id: strId} )
+      .then(response => {
+        setPersons(persons.concat(response.data))
+      })
     setNewName('')
     setNewNumber('')
 }
@@ -51,8 +58,23 @@ const handleSearch = (e) => {
 }
 
 const filterPersons = persons.filter(person =>
-  person.name.toLowerCase().includes(search.toLocaleLowerCase())
+  person.name.toLowerCase().includes(search.toLowerCase())
 )
+
+const handleDelete = (id) => {
+
+  console.log('dato de ID:', id)
+
+  if (window.confirm(`Delete Id ${id}?`)) {
+
+    crud.deletePerson(id).then(() => {
+      setPersons(persons.filter(person => person.id !== id));
+     
+    })
+    console.log(persons)
+  }
+
+}
 
   return (
   <>
@@ -68,7 +90,7 @@ const filterPersons = persons.filter(person =>
 
       <h2>Numbers</h2>
 
-      { persons ? <Persons persons={filterPersons}/> : '...' }
+      { persons ? <Persons persons={filterPersons} handleDelete={handleDelete} /> : '...' }
 
     </div>
 
