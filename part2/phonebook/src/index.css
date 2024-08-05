@@ -35,6 +35,17 @@ h1 {
   line-height: 1.1;
 }
 
+.done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #2cb92c;
+  color: #2cb92c;
+  text-align: center;
+  
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;

@@ -8,9 +8,7 @@ import crud from './crud'
 
 
 const App = () => {
-
   
-
   const [persons, setPersons] = useState([]) 
 
   const [newName, setNewName] = useState('debug')
@@ -18,6 +16,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('debug')
 
   const [search, setSearch] = useState('')
+
+  const [done, setDone] = useState(false)
 
   useEffect(() => {
     crud
@@ -50,8 +50,12 @@ const handleSubmit = (e) => {
       .then(response => {
         setPersons(persons.concat(response.data))
       })
-    setNewName('')
     setNewNumber('')
+    setDone(true)
+    setTimeout(() => {
+      setDone(false)
+      setNewName('')
+    }, 1500);
 }
 const handleSearch = (e) => {
   setSearch(e.target.value)
@@ -86,7 +90,8 @@ const handleDelete = (id) => {
 
       <h2>Add a New Person</h2>
 
-        <Form newName={newName} newNumber={newNumber} handleChangeName={handleChangeName} handleSubmit={handleSubmit} handleChangeNumber={handleChangeNumber}/>
+        {done ? <div className='done'>{`Added ${newName}`}</div> : <Form newName={newName} newNumber={newNumber} handleChangeName={handleChangeName} handleSubmit={handleSubmit} handleChangeNumber={handleChangeNumber}/>}
+        
 
       <h2>Numbers</h2>
 
