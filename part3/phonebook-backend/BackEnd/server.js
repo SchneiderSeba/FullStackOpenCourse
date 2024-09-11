@@ -44,6 +44,11 @@ app.get('/info', (req, res) => {
 
 app.use('/api/persons', dataRouter)
 
+app.delete('/api/persons/:id', dataRouter => {
+})
+
+app.post('/api/persons', dataRouter => {})
+
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`)
 })
