@@ -1,10 +1,13 @@
 import express from 'express'
 import cors from 'cors'
+import morgan from 'morgan'
 import { PORT } from './config.js'
 import { dataRouter } from '../BackEnd/Router/DataRouter.js'
 
 const app = express()
 app.use(cors())
+morgan.token('body', (req) => JSON.stringify(req.body))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 app.use(express.json())
 
 const data = [
