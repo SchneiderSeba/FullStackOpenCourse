@@ -5,7 +5,9 @@ const data = readJSON('./DB.json')
 
 export const dataRouter = Router()
 
-dataRouter.get('/', (req, res) => {})
+dataRouter.get('/', (req, res) => {
+  res.json(data)
+})
 
 dataRouter.get('/:id', (req, res) => {
   const id = Number(req.params.id)

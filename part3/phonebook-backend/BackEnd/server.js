@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import { PORT } from './config.js'
-import { dataRouter } from '../BackEnd/Router/DataRouter.js'
+import { dataRouter } from './Router/DataRouter.js'
 
 const app = express()
 app.use(cors())
