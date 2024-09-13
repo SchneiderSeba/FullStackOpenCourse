@@ -1,6 +1,8 @@
 import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
+import { ConnectMDB } from './mongodb.js'
+import { Person } from './Models/Person.js'
 import { PORT } from './config.js'
 import { dataRouter } from './Router/DataRouter.js'
 
@@ -33,9 +35,7 @@ const data = [
   }
 ]
 
-app.get('/api/persons', (req, res) => {
-  res.json(data)
-})
+app.get('/api/persons', dataRouter => {})
 
 app.get('/info', (req, res) => {
   const date = new Date()

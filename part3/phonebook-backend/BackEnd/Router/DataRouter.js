@@ -1,12 +1,21 @@
 import { Router } from 'express'
 import { readJSON } from '../utils.js'
+import { Person } from '../Models/Person.js'
 
 const data = readJSON('./DB.json')
 
 export const dataRouter = Router()
 
 dataRouter.get('/', (req, res) => {
-  res.json(data)
+  Person.find({}).then((persons) => {
+    res.json(persons)
+  })
+})
+
+dataRouter.get('/api/persons', (req, res) => {
+  Person.find({}).then((persons) => {
+    res.json(persons)
+  })
 })
 
 dataRouter.get('/:id', (req, res) => {
