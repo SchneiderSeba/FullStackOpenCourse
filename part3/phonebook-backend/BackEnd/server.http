@@ -1,5 +1,11 @@
+### GET /
+GET http://localhost:3000/
+
 ### GET ALL
 GET http://localhost:3000/api/persons
+
+### GET BY ID
+GET http://localhost:3000/api/persons/66e5a54048a8eb488e8b4216
 
 ### POST CREATE
 POST http://localhost:3000/api/persons
@@ -11,4 +17,4 @@ Content-Type: application/json
 }
 
 ### DELETE
-DELETE http://localhost:3000/api/persons/3
+DELETE http://localhost:3000/api/persons/66e5a54048a8eb488e8b4216

@@ -6,32 +6,24 @@ const data = readJSON('./DB.json')
 
 export const dataRouter = Router()
 
-dataRouter.get('/', (req, res) => {
+dataRouter.get('/persons', (req, res) => {
   Person.find({}).then((persons) => {
     res.json(persons)
   })
 })
 
-dataRouter.get('/api/persons', (req, res) => {
-  Person.find({}).then((persons) => {
-    res.json(persons)
+dataRouter.get('/persons/:id', (req, res) => {
+  const id = req.params.id
+  Person.findById(id).then((person) => {
+    if (person) {
+      res.json(person)
+    } else {
+      res.status(404).json({ message: 'Person not found' })
+    }
   })
 })
 
-dataRouter.get('/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const person = data.find((person) => person.id === id)
-
-  if (person) {
-    res.json(person)
-  } else {
-    res.status(404).json({ message: 'Person not found' })
-  }
-
-  return person
-})
-
-dataRouter.post('/', (req, res) => {
+dataRouter.post('/persons', (req, res) => {
   const { name, number } = req.body
 
   if (!name || !number) {
@@ -41,24 +33,24 @@ dataRouter.post('/', (req, res) => {
     return res.status(409).json({ message: 'Name must be unique' })
   }
 
-  const person = {
+  const person = new Person({
     id: Math.floor(Math.random() * 1000),
     name,
     number
-  }
+  })
 
-  data.push(person)
-  res.status(201).json(person)
+  person.save().then((savedPerson) => {
+    res.status(201).json(savedPerson)
+  })
 })
 
-dataRouter.delete('/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const person = data.find((person) => person.id === id)
-
-  if (person) {
-    data.splice(data.indexOf(person), 1)
-    res.status(204).json({ message: 'Person deleted' })
-  } else {
-    res.status(404).json({ message: 'Person not found' })
-  }
+dataRouter.delete('/persons/:id', (req, res) => {
+  const id = req.params.id
+  Person.findByIdAndDelete(id).then((result) => {
+    if (result) {
+      res.status(204).json({ message: 'Person deleted' })
+    } else {
+      res.status(404).json({ message: 'Person not found' })
+    }
+  })
 })
