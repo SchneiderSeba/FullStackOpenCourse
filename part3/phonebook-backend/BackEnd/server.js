@@ -5,6 +5,7 @@ import path from 'path'
 import { ConnectMDB } from './mongo.js'
 import { PORT } from './config.js'
 import { dataRouter } from './Router/DataRouter.js'
+import { errorHandler } from './Middleware/Error.js'
 
 const app = express()
 app.use(cors())
@@ -57,6 +58,10 @@ ConnectMDB().then(() => {
   app.delete('/api', dataRouter)
 
   app.post('/api', dataRouter)
+
+  app.put('/api', dataRouter)
+
+  app.use(errorHandler)
 
   app.listen(PORT, () => {
     console.log(`Server is running on port http://localhost:${PORT}`)

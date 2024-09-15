@@ -5,7 +5,7 @@ GET http://localhost:3000/
 GET http://localhost:3000/api/persons
 
 ### GET BY ID
-GET http://localhost:3000/api/persons/66e5b672b9794f5d803b1594
+GET http://localhost:3000/api/persons/66e5eb80c4c8caae0891dc95
 
 ### POST CREATE
 POST http://localhost:3000/api/persons
@@ -18,3 +18,12 @@ Content-Type: application/json
 
 ### DELETE
 DELETE http://localhost:3000/api/persons/66e5b451a7590fd3c749bfcf
+
+### PUT UPDATE
+PUT http://localhost:3000/api/persons/66e5eb80c4c8caae0891dc95
+Content-Type: application/json
+
+{
+    "name": "Carlos Mejias",
+    "number": "045-000000"
+}

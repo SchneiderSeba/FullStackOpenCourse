@@ -34,29 +34,35 @@ const handleChangeNumber = (e) => {
   setNewNumber(e.target.value)
 }
 
-
-const handleSubmit = (e) => {
-    e.preventDefault()
-    if (persons.some(person => person.name === newName)) {
-      return alert(`${newName} is already in phonebook`)
-    }
-
-    const maxId = persons.length > 0 ? Math.max(...persons.map(person => person.id)) : 0
-    const newId = maxId + 1
-    const strId = newId.toString()
-
-    crud
-      .create( {name: newName, number: newNumber, id: strId} )
-      .then(response => {
-        setPersons(persons.concat(response.data))
-      })
-    setNewNumber('')
-    setDone(true)
-    setTimeout(() => {
-      setDone(false)
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const newPerson = { name: newName, number: newNumber }
+    crud.create(newPerson).then(response => {
+      const updatedPerson = response.data
+      setPersons(persons.map(person => person.name === updatedPerson.name ? updatedPerson : person))
       setNewName('')
-    }, 1500);
-}
+      setNewNumber('')
+    }).catch(error => {
+      console.error('Error adding/updating person:', error)
+    })
+  }
+//     e.preventDefault()
+//     if (persons.some(person => person.name === newName)) {
+//       return alert(`${newName} is already in phonebook`)
+//     }
+
+//     crud
+//       .create( {name: newName, number: newNumber, id: strId} )
+//       .then(response => {
+//         setPersons(persons.concat(response.data))
+//       })
+//     setNewNumber('')
+//     setDone(true)
+//     setTimeout(() => {
+//       setDone(false)
+//       setNewName('')
+//     }, 1500);
+// }
 const handleSearch = (e) => {
   setSearch(e.target.value)
 }
