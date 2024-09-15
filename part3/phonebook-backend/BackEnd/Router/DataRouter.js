@@ -3,6 +3,16 @@ import { Person } from '../Models/Person.js'
 
 export const dataRouter = Router()
 
+dataRouter.get('/info', (req, res) => {
+  const date = new Date()
+  Person.find({}).then((person) => {
+    res.send(`
+        <p>Phonebook has info for ${person.length} people</p>
+        <p>${date}</p>
+    `)
+  })
+})
+
 dataRouter.get('/persons', (req, res, next) => {
   Person.find({}).then((persons) => {
     res.json(persons)
@@ -25,38 +35,17 @@ dataRouter.post('/persons', (req, res, next) => {
 
   Person.findOne({ name }).then((existingPerson) => {
     if (existingPerson) {
-      // Si la persona ya existe, actualiza su información
       existingPerson.number = number
       existingPerson.save().then((updatedPerson) => {
         res.json(updatedPerson)
       }).catch(error => next(error))
     } else {
-      // Si la persona no existe, crea una nueva entrada
       const newPerson = new Person({ name, number })
       newPerson.save().then((savedPerson) => {
         res.status(201).json(savedPerson)
       }).catch(error => next(error))
     }
   }).catch(error => next(error))
-  // const { name, number } = req.body
-
-  // if (!name || !number) {
-  //   return res.status(422).json({ message: 'Name or number is missing' })
-  // }
-  // if (data.find((person) => person.name === name)) {
-  //   return res.status(409).json({ message: 'Name must be unique' })
-  // }
-
-  // const person = new Person({
-  //   id: Math.floor(Math.random() * 1000),
-  //   name,
-  //   number
-  // })
-
-  // person.save().then((savedPerson) => {
-  //   res.status(201).json(savedPerson)
-  //   console.log(`added ${name} number ${number} to phonebook`)
-  // }).catch(error => next(error))
 })
 
 dataRouter.put('/persons/:id', (req, res, next) => {

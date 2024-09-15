@@ -19,6 +19,8 @@ const App = () => {
 
   const [done, setDone] = useState(false)
 
+  const [error, setError] = useState('')
+
   useEffect(() => {
     crud
       .getAll()
@@ -38,31 +40,25 @@ const handleChangeNumber = (e) => {
     event.preventDefault()
     const newPerson = { name: newName, number: newNumber }
     crud.create(newPerson).then(response => {
-      const updatedPerson = response.data
-      setPersons(persons.map(person => person.name === updatedPerson.name ? updatedPerson : person))
+      const addedPerson = response.data
+      setPersons(prevPersons => {
+        const existingPerson = prevPersons.find(person => person.name === addedPerson.name)
+        if (existingPerson) {
+          return prevPersons.map(person => person.name === addedPerson.name ? addedPerson : person)
+        } else {
+          return [...prevPersons, addedPerson]
+        }
+      })
       setNewName('')
       setNewNumber('')
+      setDone(true)
+      setTimeout(() => setDone(false), 2000)
     }).catch(error => {
-      console.error('Error adding/updating person:', error)
+      setError(error.response.data.error)
+      setTimeout(() => setError(''), 2000)
     })
   }
-//     e.preventDefault()
-//     if (persons.some(person => person.name === newName)) {
-//       return alert(`${newName} is already in phonebook`)
-//     }
-
-//     crud
-//       .create( {name: newName, number: newNumber, id: strId} )
-//       .then(response => {
-//         setPersons(persons.concat(response.data))
-//       })
-//     setNewNumber('')
-//     setDone(true)
-//     setTimeout(() => {
-//       setDone(false)
-//       setNewName('')
-//     }, 1500);
-// }
+  
 const handleSearch = (e) => {
   setSearch(e.target.value)
 }
@@ -82,6 +78,9 @@ const handleDelete = (_id) => {
      
     })
     console.log(persons)
+    .catch(error => {
+      console.error('Error deleting person:', error)
+    })
   }
 
 }
@@ -96,7 +95,10 @@ const handleDelete = (_id) => {
 
       <h2>Add a New Person</h2>
 
+
         {done ? <div className='done'>{`Added ${newName}`}</div> : <Form newName={newName} newNumber={newNumber} handleChangeName={handleChangeName} handleSubmit={handleSubmit} handleChangeNumber={handleChangeNumber}/>}
+
+        {error ? <div className='error'>{error}</div> : null}
         
 
       <h2>Numbers</h2>
