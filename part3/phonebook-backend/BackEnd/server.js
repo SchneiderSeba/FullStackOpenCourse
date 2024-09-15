@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import path from 'path'
-import { ConnectMDB } from './mongodb.js'
+import { ConnectMDB } from './mongo.js'
 import { PORT } from './config.js'
 import { dataRouter } from './Router/DataRouter.js'
 

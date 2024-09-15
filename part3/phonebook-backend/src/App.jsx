@@ -65,14 +65,14 @@ const filterPersons = persons.filter(person =>
   person.name.toLowerCase().includes(search.toLowerCase())
 )
 
-const handleDelete = (id) => {
+const handleDelete = (_id) => {
 
-  console.log('dato de ID:', id)
+  console.log('dato de ID:', _id)
 
-  if (window.confirm(`Delete Id ${id}?`)) {
+  if (window.confirm(`Delete Id ${_id}?`)) {
 
-    crud.deletePerson(id).then(() => {
-      setPersons(persons.filter(person => person.id !== id));
+    crud.deletePerson(_id).then(() => {
+      setPersons(persons.filter(person => person._id !== _id));
      
     })
     console.log(persons)

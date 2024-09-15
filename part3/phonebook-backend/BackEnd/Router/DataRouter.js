@@ -41,6 +41,7 @@ dataRouter.post('/persons', (req, res) => {
 
   person.save().then((savedPerson) => {
     res.status(201).json(savedPerson)
+    console.log(`added ${name} number ${number} to phonebook`)
   })
 })
 
