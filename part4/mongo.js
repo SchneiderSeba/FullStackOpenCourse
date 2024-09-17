@@ -1,13 +1,14 @@
 import mongoose from 'mongoose'
-import { password } from './Utils/config.js'
+import { info } from './Utils/logger.js'
+import { MONGO_URI } from './Utils/config.js'
 
-const connectDB = `mongodb+srv://seba19sc:${password}@moviesapirest.xdwlu.mongodb.net/Blogs?retryWrites=true&w=majority&appName=MoviesAPIRest`
+const connectDB = process.env.MONGO_URI || MONGO_URI
 
 export function connectBDB () {
   return mongoose.connect(connectDB).then(() => {
-    console.log('Connected to MongoDB')
+    info('Connected to MongoDB')
   })
     .catch((error) => {
-      console.log('Error connecting to MongoDB:', error.message)
+      info('Error connecting to MongoDB:', error.message)
     })
 }
