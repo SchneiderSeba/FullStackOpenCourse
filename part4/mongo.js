@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { password } from './config.js'
+import { password } from './Utils/config.js'
 
 const connectDB = `mongodb+srv://seba19sc:${password}@moviesapirest.xdwlu.mongodb.net/Blogs?retryWrites=true&w=majority&appName=MoviesAPIRest`
 

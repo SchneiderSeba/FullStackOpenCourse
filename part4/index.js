@@ -1,8 +1,9 @@
 import express from 'express'
 import cors from 'cors'
-import { PORT } from './config.js'
+import { PORT } from './Utils/config.js'
 import { connectBDB } from './mongo.js'
-import { router } from './Router/router.js'
+import { router } from './Controllers/router.js'
+import { info } from './Utils/logger.js'
 
 const app = express()
 app.use(cors())
@@ -15,5 +16,5 @@ app.use('/api', router)
 app.post('/api', router)
 
 app.listen(PORT, () => {
-  console.log(`Server running on port http://localhost:${PORT}`)
+  info(`Server running on port http://localhost:${PORT}`)
 })
