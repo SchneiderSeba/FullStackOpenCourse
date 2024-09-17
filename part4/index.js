@@ -19,3 +19,5 @@ app.post('/api', router)
 app.listen(PORT, () => {
   info(`Server running on port http://localhost:${PORT}`)
 })
+
+export default app

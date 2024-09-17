@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import { info } from './Utils/logger.js'
 import { MONGO_URI } from './Utils/config.js'
 
-const connectDB = process.env.MONGO_URI || MONGO_URI
+const connectDB = MONGO_URI
 
 export function connectBDB () {
   return mongoose.connect(connectDB).then(() => {

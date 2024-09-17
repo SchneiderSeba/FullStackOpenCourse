@@ -12,11 +12,23 @@ router.get('/blogs', (req, res) => {
 })
 
 router.post('/blogs', (req, res) => {
-  const blog = new Blog(req.body)
+  const { title, author, url, likes } = req.body
 
-  blog
-    .save()
-    .then(result => {
-      res.status(201).json(result)
-    })
+  if (!title || !author) {
+    return res.status(400).json({ error: 'title and author are required' })
+  }
+
+  Blog.findOne({ title }).then((existingBlog) => {
+    if (existingBlog) {
+      existingBlog.author = author
+      existingBlog.save().then((updatedBlog) => {
+        res.json(updatedBlog)
+      })
+    } else {
+      const newBlog = new Blog({ title, author, url, likes })
+      newBlog.save().then((savedBlog) => {
+        res.status(201).json(savedBlog)
+      })
+    }
+  }).catch(error => res.status(400).json({ error: error.message }))
 })
