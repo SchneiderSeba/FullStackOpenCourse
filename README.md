@@ -37,15 +37,15 @@ This repo is like a well-organized closet, with each folder being a new part of 
 
 2. Navigate to the part you're feeling adventurous about. For example:
     ```bash
-cd part3
+    cd part3
 
 3. Install the dependencies (yes, npm install is your new best friend):
     ```bash
-npm install
+    npm install
 
 4. Run the app:
     ```bash
-npm start
+    npm start
 
 5. Watch the magic unfold in your browser. 🖥️🎩✨
 
