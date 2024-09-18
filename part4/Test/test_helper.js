@@ -12,13 +12,19 @@ export const fackData = [
     author: 'Test Author 2',
     url: 'Test URL 2',
     likes: 2
+  },
+  {
+    title: 'Test Title 3',
+    author: 'Test Author 3',
+    url: 'Test URL 3',
+    likes: 3
   }
 ]
 
 export const nonExistingId = async () => {
   const blog = new Blog({ title: 'willremovethissoon', author: 'willremovethissoon' })
   await blog.save()
-  await blog.remove()
+  await blog.deleteOne()
 
   return blog._id.toString()
 }

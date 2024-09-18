@@ -4,7 +4,7 @@ import assert from 'assert'
 import mongoose from 'mongoose'
 import supertest from 'supertest'
 import app from '../index.js'
-import { blogsInDb, fackData } from './test_helper.js'
+import { blogsInDb, fackData, nonExistingId } from './test_helper.js'
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -24,7 +24,7 @@ test('api test', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-test('there are 2 blogs', async () => {
+test(`there are ${fackData.length} Blogs`, async () => {
   const res = await api.get('/api/blogs')
 
   assert.strictEqual(res.body.length, fackData.length)
@@ -112,6 +112,22 @@ test('a blog can be deleted', async () => {
   assert(!contents.includes(blogToDelete.author))
 
   assert.strictEqual(blogsAtEnd.length, fackData.length - 1)
+})
+
+test('fails with statuscode 404 if blog does not exist', async () => {
+  const validNonexistingId = await nonExistingId()
+
+  await api
+    .get(`/api/blogs/${validNonexistingId}`)
+    .expect(404)
+})
+
+test('fails with statuscode 400 id is invalid', async () => {
+  const invalidId = '5a3d5da59070081a82a3445'
+
+  await api
+    .get(`/api/blogs/${invalidId}`)
+    .expect(500)
 })
 
 after(async () => {
