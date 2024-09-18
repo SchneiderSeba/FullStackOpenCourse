@@ -8,12 +8,12 @@ import { blogsInDb, fackData } from './test_helper.js'
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  let blogObject = new Blog(fackData[0])
-  await blogObject.save()
-  blogObject = new Blog(fackData[1])
-  await blogObject.save()
-}
-)
+
+  for (const blog of fackData) {
+    const blogObject = new Blog(blog)
+    await blogObject.save()
+  }
+})
 
 const api = supertest(app)
 
