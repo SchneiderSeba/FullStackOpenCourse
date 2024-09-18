@@ -1,6 +1,7 @@
 import express from 'express'
 import 'dotenv/config'
 import cors from 'cors'
+import 'express-async-errors'
 import { PORT } from './Utils/config.js'
 import { connectBDB } from './mongo.js'
 import { router } from './Controllers/router.js'
@@ -15,6 +16,8 @@ connectBDB()
 app.use('/api', router)
 
 app.post('/api', router)
+
+app.delete('/api', router)
 
 app.listen(PORT, () => {
   info(`Server running on port http://localhost:${PORT}`)

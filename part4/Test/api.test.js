@@ -4,21 +4,7 @@ import assert from 'assert'
 import mongoose from 'mongoose'
 import supertest from 'supertest'
 import app from '../index.js'
-
-const fackData = [
-  {
-    title: 'Test Title 1',
-    author: 'XXX',
-    url: 'Test URL 1',
-    likes: 1
-  },
-  {
-    title: 'Test Title 2',
-    author: 'Test Author 2',
-    url: 'Test URL 2',
-    likes: 2
-  }
-]
+import { blogsInDb, fackData } from './test_helper.js'
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -91,6 +77,41 @@ test('blog without content is not added', async () => {
   assert.strictEqual(response.body.length, fackData.length)
 
   console.log(response.body)
+})
+
+test('a specific blog viewed', async () => {
+  const blogsAtStart = await blogsInDb()
+  const blogToView = blogsAtStart[0]
+  console.log('Blog ID:', blogToView._id)
+
+  const resultBlog = await api
+    .get(`/api/blogs/${blogToView._id}`)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const processedBlogToView = JSON.parse(JSON.stringify(blogToView))
+
+  assert.deepStrictEqual(resultBlog.body, processedBlogToView)
+})
+
+test('a blog can be deleted', async () => {
+  const blogsAtStart = await blogsInDb()
+  const blogToDelete = blogsAtStart[0]
+  console.log('Blog ID to Delete:', blogToDelete._id)
+
+  await api
+    .delete(`/api/blogs/${blogToDelete._id}`)
+    .expect(204)
+
+  const blogsAtEnd = await blogsInDb()
+
+  assert.strictEqual(blogsAtEnd.length, fackData.length - 1)
+
+  const contents = blogsAtEnd.map(r => r.author)
+
+  assert(!contents.includes(blogToDelete.author))
+
+  assert.strictEqual(blogsAtEnd.length, fackData.length - 1)
 })
 
 after(async () => {

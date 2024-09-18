@@ -1,13 +1,19 @@
 ### GET ALL
 GET http://localhost:3003/api/blogs
 
+### GET BY ID
+GET http://localhost:3003/api/blogs/66e84abba360bb70d58c0ee3
+
 ### POST
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "TEST",
-    "author": "TEST",
-    "url": "https://cuevana.biz/",
-    "likes": 5000
+    "title": "XVideos",
+    "author": "XVIDEOS",
+    "url": "https://XVIDEOS.COM/",
+    "likes": 1000
 }
+
+### DELETE
+DELETE http://localhost:3003/api/blogs/66e9abd51db472dbc1d74938
