@@ -1,10 +1,10 @@
-### GET ALL
+### GET ALL BLOGS
 GET http://localhost:3003/api/blogs
 
-### GET BY ID
+### GET BY ID BLOG
 GET http://localhost:3003/api/blogs/66e84abba360bb70d58c0ee3
 
-### POST
+### POST BLOG
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
@@ -15,7 +15,7 @@ Content-Type: application/json
     "likes": 1000
 }
 
-### PUT
+### PUT BLOG
 PUT http://localhost:3003/api/blogs/66e848e7a360bb70d58c0edf
 Content-Type: application/json
 
@@ -23,5 +23,18 @@ Content-Type: application/json
     "likes": 100000000
 }
 
-### DELETE
-DELETE http://localhost:3003/api/blogs/66e9abd51db472dbc1d74938
+### DELETE BLOG
+DELETE http://localhost:3003/api/blogs/66eaeaa6c5d1bcd43cc1b3cf
+
+### GET ALL USERS
+GET http://localhost:3003/api/users
+
+### POST USER
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "root",
+    "name": "root",
+    "password": "root"
+}

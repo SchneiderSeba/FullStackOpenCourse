@@ -1,10 +1,12 @@
 import { test, after, beforeEach, describe } from 'node:test'
 import { Blog } from '../Models/Blog.js'
+import { User } from '../Models/User.js'
+import bcrypt from 'bcrypt'
 import assert from 'assert'
 import mongoose from 'mongoose'
 import supertest from 'supertest'
 import app from '../index.js'
-import { blogsInDb, fackData, nonExistingId } from './test_helper.js'
+import { blogsInDb, usersInDb, fackData, nonExistingId } from './test_helper.js'
 
 describe('When there is initially some blogs saved as a test', () => {
   beforeEach(async () => {
@@ -201,6 +203,43 @@ describe('When there is initially some blogs saved as a test', () => {
 
     //   console.log('title or url required', response.body)
     })
+  })
+})
+
+describe('When there is initially one user at db', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', passwordHash })
+
+    await user.save()
+  })
+
+  const api = supertest(app)
+
+  test('creation succeeds with a fresh username', async () => {
+    const usersAtStart = await usersInDb()
+
+    const newUser = {
+      username: 'test',
+      name: 'Test User',
+      password: 'test123'
+    }
+
+    await api
+      .post('/api/user')
+      .send(newUser)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await usersInDb()
+
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
+
+    const usernames = usersAtEnd.map(u => u.username)
+
+    assert(usernames.includes(newUser.username))
   })
 })
 

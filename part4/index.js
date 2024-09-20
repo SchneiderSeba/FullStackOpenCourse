@@ -6,6 +6,8 @@ import { PORT } from './Utils/config.js'
 import { connectBDB } from './mongo.js'
 import { router } from './Controllers/router.js'
 import { info } from './Utils/logger.js'
+import { userRouter } from './Controllers/user.js'
+import { errorHandler, unknownEndpoint } from './Middleware/error.js'
 
 const app = express()
 app.use(cors())
@@ -15,11 +17,11 @@ connectBDB()
 
 app.use('/api', router)
 
-app.post('/api', router)
+app.use('/api/users', userRouter)
 
-app.put('/api', router)
+app.use(unknownEndpoint)
 
-app.delete('/api', router)
+app.use(errorHandler)
 
 app.listen(PORT, () => {
   info(`Server running on port http://localhost:${PORT}`)
