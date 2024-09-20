@@ -40,6 +40,21 @@ router.post('/blogs', async (req, res) => {
   }
 })
 
+router.put('/blogs/:id', async (req, res) => {
+  const { id } = req.params
+  const { title, author, url, likes } = req.body
+
+  const blog = { title, author, url, likes }
+
+  const updatedBlog = await Blog.findByIdAndUpdate(id, blog, { new: true })
+
+  if (updatedBlog) {
+    res.json(updatedBlog)
+  } else {
+    res.status(404).end()
+  }
+})
+
 router.delete('/blogs/:id', async (req, res) => {
   const { id } = req.params
 

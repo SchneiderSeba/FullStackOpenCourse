@@ -17,6 +17,8 @@ app.use('/api', router)
 
 app.post('/api', router)
 
+app.put('/api', router)
+
 app.delete('/api', router)
 
 app.listen(PORT, () => {
