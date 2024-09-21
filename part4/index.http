@@ -9,10 +9,11 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "XVideos",
-    "author": "XVIDEOS",
-    "url": "https://XVIDEOS.COM/",
-    "likes": 1000
+    "title": "PRUEBA",
+    "author": "root",
+    "url": "zzzz",
+    "likes": 5,
+    "user": "66eda2df8e77b696a10855cf"
 }
 
 ### PUT BLOG
@@ -24,7 +25,7 @@ Content-Type: application/json
 }
 
 ### DELETE BLOG
-DELETE http://localhost:3003/api/blogs/66eaeaa6c5d1bcd43cc1b3cf
+DELETE http://localhost:3003/api/blogs/66ef327e9b88e3ad2469a7c3
 
 ### GET ALL USERS
 GET http://localhost:3003/api/users
