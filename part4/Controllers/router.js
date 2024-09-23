@@ -1,15 +1,24 @@
 import { Blog } from '../Models/Blog.js'
 import { User } from '../Models/User.js'
 import { Router } from 'express'
+import jwt from 'jsonwebtoken'
 
-export const router = Router()
+const getTokenFrom = (req) => {
+  const authorization = req.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.replace('Bearer ', '')
+  }
+  return null
+}
 
-router.get('/blogs', async (req, res) => {
+export const blogRouter = Router()
+
+blogRouter.get('/blogs', async (req, res) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
   res.json(blogs)
 })
 
-router.get('/blogs/:id', async (req, res) => {
+blogRouter.get('/blogs/:id', async (req, res) => {
   const { id } = req.params
 
   const blog = await Blog.findById(id).populate('user', { username: 1, name: 1 })
@@ -22,14 +31,21 @@ router.get('/blogs/:id', async (req, res) => {
   }
 })
 
-router.post('/blogs', async (req, res) => {
+blogRouter.post('/blogs', async (req, res) => {
   const { title, author, url, likes, user } = req.body
+  const decodedToken = jwt.verify(getTokenFrom(req), process.env.SECRET)
+  if (!decodedToken.id) {
+    return res.status(401).json({ error: 'token missing or invalid' })
+  }
+
+  // const userToken = await User.findById(decodedToken.id)
 
   if (!title || !author) {
     return res.status(400).json({ error: 'title and author are required' })
   }
   const existingBlog = await Blog.findOne({ title })
-  const userExists = await User.findById(user)
+  // const userExists = await User.findById(user)
+  const userExists = await User.findById(decodedToken.id)
 
   if (!userExists) {
     return res.status(400).json({ error: 'user does not exist' })
@@ -48,7 +64,7 @@ router.post('/blogs', async (req, res) => {
   }
 })
 
-router.put('/blogs/:id', async (req, res) => {
+blogRouter.put('/blogs/:id', async (req, res) => {
   const { id } = req.params
   const { title, author, url, likes } = req.body
 
@@ -63,7 +79,7 @@ router.put('/blogs/:id', async (req, res) => {
   }
 })
 
-router.delete('/blogs/:id', async (req, res) => {
+blogRouter.delete('/blogs/:id', async (req, res) => {
   const { id } = req.params
 
   await Blog.findByIdAndDelete(id)
