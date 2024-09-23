@@ -6,11 +6,16 @@ import assert from 'assert'
 import mongoose from 'mongoose'
 import supertest from 'supertest'
 import app from '../index.js'
-import { blogsInDb, usersInDb, fackData, nonExistingId } from './test_helper.js'
+import { blogsInDb, usersInDb, fackData, nonExistingId, getTokenForTest } from './test_helper.js'
 
 describe('When there is initially some blogs saved as a test', () => {
   beforeEach(async () => {
     await Blog.deleteMany({})
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('testpassword', 10)
+    const testUser = new User({ username: 'testUser', passwordHash })
+    await testUser.save()
 
     for (const blog of fackData) {
       const blogObject = new Blog(blog)
@@ -48,13 +53,18 @@ describe('When there is initially some blogs saved as a test', () => {
         title: 'BLOG DE PRUEBA',
         author: 'BLOG DE PRUEBA',
         url: 'BLOG DE PRUEBA',
-        likes: 1
+        likes: 1,
+        user: '66f16dee6748ed9e6109a9df'
       }
+
+      const token = await getTokenForTest()
 
       await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(201)
+        // agregar exoect para autorizacion jwt
         .expect('Content-Type', /application\/json/)
 
       const response = await api.get('/api/blogs')
@@ -73,8 +83,11 @@ describe('When there is initially some blogs saved as a test', () => {
         likes: 1
       }
 
+      const token = await getTokenForTest()
+
       await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(400)
 
@@ -89,11 +102,15 @@ describe('When there is initially some blogs saved as a test', () => {
       const newBlog = {
         title: 'BLOG DE PRUEBA',
         author: 'BLOG DE PRUEBA',
-        url: 'BLOG DE PRUEBA'
+        url: 'BLOG DE PRUEBA',
+        user: '66f16dee6748ed9e6109a9df'
       }
+
+      const token = await getTokenForTest()
 
       await api
         .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -133,18 +150,27 @@ describe('When there is initially some blogs saved as a test', () => {
 
   describe('GET by ID viewing a specific blog', () => {
     test('a specific blog viewed', async () => {
-      const blogsAtStart = await blogsInDb()
+      // extraer blogs de fackData
+
+      const blogsAtStart = fackData
+      console.log('Blogs:', blogsAtStart)
+
       const blogToView = blogsAtStart[0]
-      //   console.log('Blog ID:', blogToView._id)
+      console.log('Blog to View:', blogToView)
+
+      // const token = await getTokenForTest()
+      console.log('Blog ID:', blogToView._id)
+      // console.log('Token:', token)
 
       const resultBlog = await api
         .get(`/api/blogs/${blogToView._id}`)
+        // .set('Authorization', `Bearer ${token}`)
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
-      const processedBlogToView = JSON.parse(JSON.stringify(blogToView))
+      // const processedBlogToView = JSON.parse(JSON.stringify(blogToView))
 
-      assert.deepStrictEqual(resultBlog.body, processedBlogToView)
+      assert.deepStrictEqual(resultBlog.body, blogToView)
     })
   })
 
@@ -184,7 +210,7 @@ describe('When there is initially some blogs saved as a test', () => {
 
       await api
         .get(`/api/blogs/${invalidId}`)
-        .expect(500)
+        .expect(400)
     })
     test('Blog without title or url is not added', async () => {
       const newBlog = {
@@ -195,7 +221,7 @@ describe('When there is initially some blogs saved as a test', () => {
       await api
         .post('/api/blogs')
         .send(newBlog)
-        .expect(400)
+        .expect(401)
 
       const response = await api.get('/api/blogs')
 
@@ -222,13 +248,13 @@ describe('When there is initially one user at db', () => {
     const usersAtStart = await usersInDb()
 
     const newUser = {
-      username: 'test',
+      username: 'testUser',
       name: 'Test User',
       password: 'test123'
     }
 
     await api
-      .post('/api/user')
+      .post('/api/users')
       .send(newUser)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -240,6 +266,24 @@ describe('When there is initially one user at db', () => {
     const usernames = usersAtEnd.map(u => u.username)
 
     assert(usernames.includes(newUser.username))
+  })
+
+  test('invalid username or password to create a new  user', async () => {
+    const newUser = {
+      username: 'te',
+      name: 'Test User',
+      password: 'test123'
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await usersInDb()
+
+    assert.strictEqual(usersAtEnd.length, 1)
   })
 })
 

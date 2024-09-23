@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
+  username: { type: String, minlength: 3, required: true, unique: true },
   name: String,
-  passwordHash: { type: String, required: true },
+  passwordHash: { type: String, required: true, minlength: 3 },
   blogs: [
     {
       type: mongoose.Schema.Types.ObjectId,

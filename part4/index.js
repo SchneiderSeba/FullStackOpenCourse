@@ -9,10 +9,12 @@ import { info } from './Utils/logger.js'
 import { userRouter } from './Controllers/user.js'
 import { errorHandler, unknownEndpoint } from './Middleware/error.js'
 import { loginRouter } from './Controllers/login.js'
+import { getTokenFrom } from './Middleware/getToken.js'
 
 const app = express()
 app.use(cors())
 app.use(express.json())
+app.use(getTokenFrom)
 
 connectBDB()
 
