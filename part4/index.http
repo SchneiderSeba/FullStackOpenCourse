@@ -7,27 +7,28 @@ GET http://localhost:3003/api/blogs/66e84abba360bb70d58c0ee3
 ### POST BLOG
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik51ZXZvVXN1YXJpbyIsImlkIjoiNjZmMWMwZjFmYzljMWE3MGJmOTJlNzBhIiwiaWF0IjoxNzI3MTgxMDg4LCJleHAiOjE3MjcxODQ2ODh9.s39gjekrDrOVfhAxe45HlWSgXaGTnbVxT6oH0bcaU_A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNjaG5laWRlclNlYmFzdGlhbiIsImlkIjoiNjZmMTZkZWU2NzQ4ZWQ5ZTYxMDlhOWRmIiwiaWF0IjoxNzI3MTg1MzAzLCJleHAiOjE3MjcxODg5MDN9.x3OxOAfFnegersTaMHGnEfBxwfZ2Ov7UyfoloQV4V3Y
 
 {
-    "title": "CHECK",
-    "author": "Nuevo Usuario",
+    "title": "NUEVO POST",
+    "author": "Sebastian Schneider",
     "url": "non url",
     "likes": 10,
-    "user": "66f1c0f1fc9c1a70bf92e70a"
+    "user": "66f16dee6748ed9e6109a9df"
 }
 
 ### PUT BLOG
-PUT http://localhost:3003/api/blogs/66e848e7a360bb70d58c0edf
+PUT http://localhost:3003/api/blogs/66f17411637b77f177697496
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNjaG5laWRlclNlYmFzdGlhbiIsImlkIjoiNjZmMTZkZWU2NzQ4ZWQ5ZTYxMDlhOWRmIiwiaWF0IjoxNzI3MTg1MzAzLCJleHAiOjE3MjcxODg5MDN9.x3OxOAfFnegersTaMHGnEfBxwfZ2Ov7UyfoloQV4V3Y
 
 {
-    "likes": 100000000
+    "likes": 800000000
 }
 
 ### DELETE BLOG only if you are the creator
-DELETE http://localhost:3003/api/blogs/66f1c7bd5838cb5310fd1000
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik51ZXZvVXN1YXJpbyIsImlkIjoiNjZmMWMwZjFmYzljMWE3MGJmOTJlNzBhIiwiaWF0IjoxNzI3MTgxMDg4LCJleHAiOjE3MjcxODQ2ODh9.s39gjekrDrOVfhAxe45HlWSgXaGTnbVxT6oH0bcaU_A
+DELETE http://localhost:3003/api/blogs/66f2ca9f1eb735b12e09f313
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNjaG5laWRlclNlYmFzdGlhbiIsImlkIjoiNjZmMTZkZWU2NzQ4ZWQ5ZTYxMDlhOWRmIiwiaWF0IjoxNzI3MTg1MzAzLCJleHAiOjE3MjcxODg5MDN9.x3OxOAfFnegersTaMHGnEfBxwfZ2Ov7UyfoloQV4V3Y
 
 ### GET ALL USERS
 GET http://localhost:3003/api/users
@@ -47,6 +48,6 @@ POST http://localhost:3003/api/login
 Content-Type: application/json
 
 {
-    "username": "NuevoUsuario",
-    "password": "0000"
+    "username": "SchneiderSebastian",
+    "password": "15673019"
 }

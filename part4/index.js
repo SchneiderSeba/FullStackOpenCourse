@@ -18,11 +18,9 @@ app.use(getTokenFrom)
 
 connectBDB()
 
-app.use('/api', blogRouter)
-
 app.use('/api/login', loginRouter)
-
 app.use('/api/users', userRouter)
+app.use('/api', blogRouter)
 
 app.use(unknownEndpoint)
 

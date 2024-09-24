@@ -2,6 +2,7 @@ import { Blog } from '../Models/Blog.js'
 import { User } from '../Models/User.js'
 import { Router } from 'express'
 import { getTokenFrom } from '../Middleware/getToken.js'
+import { userExtractor } from '../Middleware/userExtractor.js'
 import jwt from 'jsonwebtoken'
 
 export const blogRouter = Router()
@@ -25,14 +26,16 @@ blogRouter.get('/blogs/:id', async (req, res) => {
   }
 })
 
-blogRouter.post('/blogs', getTokenFrom, async (req, res) => {
-  const { title, author, url, likes, user } = req.body
+blogRouter.post('/blogs', getTokenFrom, userExtractor, async (req, res) => {
+  const { title, author, url, likes } = req.body
 
   if (!title || !author) {
     return res.status(400).json({ error: 'title and author are required' })
   }
 
+  const user = req.user
   const token = req.token
+
   if (!token) {
     return res.status(401).json({ error: 'token missing or invalid' })
   }
@@ -60,7 +63,7 @@ blogRouter.post('/blogs', getTokenFrom, async (req, res) => {
     const updatedBlog = await existingBlog.save()
     res.json(updatedBlog)
   } else {
-    const newBlog = new Blog({ title, author, url, likes, user })
+    const newBlog = new Blog({ title, author, url, likes, user: user._id })
     const savedBlog = await newBlog.save()
     userExists.blogs = userExists.blogs.concat(savedBlog._id)
     await userExists.save()
@@ -68,13 +71,14 @@ blogRouter.post('/blogs', getTokenFrom, async (req, res) => {
   }
 })
 
-blogRouter.put('/blogs/:id', async (req, res) => {
-  const { id } = req.params
+blogRouter.put('/blogs/:id', getTokenFrom, userExtractor, async (req, res) => {
   const { title, author, url, likes } = req.body
 
   const blog = { title, author, url, likes }
 
-  const updatedBlog = await Blog.findByIdAndUpdate(id, blog, { new: true })
+  const { id } = req.params
+
+  const updatedBlog = await Blog.findByIdAndUpdate(id, blog, { new: true, runValidators: true, context: 'query' })
 
   if (updatedBlog) {
     res.json(updatedBlog)
@@ -83,30 +87,10 @@ blogRouter.put('/blogs/:id', async (req, res) => {
   }
 })
 
-blogRouter.delete('/blogs/:id', async (req, res) => {
+blogRouter.delete('/blogs/:id', userExtractor, async (req, res) => {
   const { id } = req.params
 
-  // delete blog only allow for the same user who created the blog
-
-  const token = req.token
-
-  if (!token) {
-    return res.status(401).json({ error: 'token missing or invalid' })
-  }
-
-  let decodedToken
-
-  try {
-    decodedToken = jwt.verify(token, process.env.SECRET)
-  } catch (error) {
-    return res.status(401).json({ error: 'token missing or invalid' })
-  }
-
-  if (!decodedToken.id) {
-    return res.status(401).json({ error: 'token missing or invalid' })
-  }
-
-  const user = await User.findById(decodedToken.id)
+  const user = req.user
 
   const blog = await Blog.findById(id)
 
@@ -116,6 +100,4 @@ blogRouter.delete('/blogs/:id', async (req, res) => {
   } else {
     res.status(401).json({ error: 'unauthorized' })
   }
-
-  res.status(204).end()
 })

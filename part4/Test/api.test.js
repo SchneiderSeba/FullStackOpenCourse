@@ -18,7 +18,7 @@ describe('When there is initially some blogs saved as a test', () => {
     await testUser.save()
 
     for (const blog of fackData) {
-      const blogObject = new Blog(blog)
+      const blogObject = new Blog({ ...blog, user: testUser._id })
       await blogObject.save()
     }
   })
@@ -98,6 +98,27 @@ describe('When there is initially some blogs saved as a test', () => {
     //   console.log(response.body)
     })
 
+    test('You cant creat a blog if you dont send a token', async () => {
+      const initBlogs = await blogsInDb()
+
+      const newBlog = {
+        title: 'BLOG DE PRUEBA',
+        author: 'BLOG DE PRUEBA',
+        url: 'BLOG DE PRUEBA',
+        likes: 1,
+        user: '66f16dee6748ed9e6109a9df'
+      }
+
+      await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(401)
+
+      const response = await api.get('/api/blogs')
+
+      assert.strictEqual(response.body.length, initBlogs.length)
+    })
+
     test('like should be 0 by default', async () => {
       const newBlog = {
         title: 'BLOG DE PRUEBA',
@@ -129,7 +150,8 @@ describe('When there is initially some blogs saved as a test', () => {
     test('a blog can be updated', async () => {
       const blogsAtStart = await blogsInDb()
       const blogToUpdate = blogsAtStart[0]
-      console.log('Blog ID to Update:', blogToUpdate._id)
+      // console.log('Blog ID to Update:', blogToUpdate._id)
+      const token = await getTokenForTest()
 
       const updatedBlog = {
         likes: 50
@@ -137,6 +159,7 @@ describe('When there is initially some blogs saved as a test', () => {
 
       await api
         .put(`/api/blogs/${blogToUpdate._id}`)
+        .set('Authorization', `Bearer ${token}`)
         .send(updatedBlog)
         .expect(200)
 
@@ -150,49 +173,47 @@ describe('When there is initially some blogs saved as a test', () => {
 
   describe('GET by ID viewing a specific blog', () => {
     test('a specific blog viewed', async () => {
-      // extraer blogs de fackData
-
-      const blogsAtStart = fackData
-      console.log('Blogs:', blogsAtStart)
+      const blogsAtStart = await blogsInDb()
+      // console.log('Blogs:', blogsAtStart)
 
       const blogToView = blogsAtStart[0]
-      console.log('Blog to View:', blogToView)
+      // console.log('Blog to View:', blogToView)
 
-      // const token = await getTokenForTest()
-      console.log('Blog ID:', blogToView._id)
-      // console.log('Token:', token)
+      // console.log('Blog ID:', blogToView._id)
 
       const resultBlog = await api
         .get(`/api/blogs/${blogToView._id}`)
-        // .set('Authorization', `Bearer ${token}`)
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
-      // const processedBlogToView = JSON.parse(JSON.stringify(blogToView))
+      const processedBlogToView = JSON.parse(JSON.stringify(blogToView))
 
-      assert.deepStrictEqual(resultBlog.body, blogToView)
+      assert.deepStrictEqual(resultBlog.body, processedBlogToView)
     })
   })
 
   describe('DELETE tests', () => {
     test('a blog can be deleted', async () => {
       const blogsAtStart = await blogsInDb()
+      // console.log('Blogs START:', blogsAtStart)
       const blogToDelete = blogsAtStart[0]
-      //   console.log('Blog ID to Delete:', blogToDelete._id)
+      // console.log('Blog ID to Delete:', blogToDelete._id)
+      const token = await getTokenForTest()
 
       await api
         .delete(`/api/blogs/${blogToDelete._id}`)
+        .set('Authorization', `Bearer ${token}`)
         .expect(204)
 
       const blogsAtEnd = await blogsInDb()
 
-      assert.strictEqual(blogsAtEnd.length, fackData.length - 1)
+      // console.log('Blogs END:', blogsAtEnd)
+
+      assert.strictEqual(blogsAtEnd.length, blogsAtStart.length - 1)
 
       const contents = blogsAtEnd.map(r => r.author)
 
       assert(!contents.includes(blogToDelete.author))
-
-      assert.strictEqual(blogsAtEnd.length, fackData.length - 1)
     })
   })
 
