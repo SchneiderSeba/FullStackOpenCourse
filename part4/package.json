@@ -20,6 +20,7 @@
   "homepage": "https://github.com/SchneiderSeba/FullStackOpenCourse#readme",
   "description": "",
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.5.8",
     "cross-env": "^7.0.3",
     "nodemon": "3.1.4",
     "standard": "17.1.0",
