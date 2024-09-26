@@ -1,5 +1,5 @@
-import { test, describe } from 'node:test'
-import assert from 'node:assert'
+import { describe } from 'node:test'
+import { expect, test } from '@jest/globals'
 import { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes } from '../Utils/list_helper.js'
 
 const listWithOneBlog = [
@@ -33,35 +33,40 @@ test('dummy returns one', () => {
   const blogs = []
 
   const results = dummy(blogs)
-  assert.strictEqual(results, 1)
+  // assert.strictEqual(results, 1)
+  expect(results).toBe(1)
 })
 
 describe('total likes', () => {
   test('check all blogs sum likes, equals the likes of that', () => {
     const result = totalLikes(listWithOneBlog)
-    assert.strictEqual(result, 20)
-    console.log('Total Likes all Blogs:', result)
+    // assert.strictEqual(result, 20)
+    expect(result).toBe(20)
+    // console.log('Total Likes all Blogs:', result)
   })
 })
 
 describe('favorite blog', () => {
   test('check favorite blog', () => {
     const result = favoriteBlog(listWithOneBlog)
-    assert.deepStrictEqual(result, listWithOneBlog[2])
-    console.log('Blog with more Likes:', result)
+    // assert.deepStrictEqual(result, listWithOneBlog[2])
+    expect(result).toEqual(listWithOneBlog[2])
+    // console.log('Blog with more Likes:', result)
   })
 })
 
 describe('most blogs', () => {
   test('check author with most blogs', () => {
     const result = mostBlogs(listWithOneBlog)
-    assert.deepStrictEqual(result, { author: 'Edsger W. Dijkstra', blogs: 2 })
-    console.log('Author with most Blogs:', result)
+    // assert.deepStrictEqual(result, { author: 'Edsger W. Dijkstra', blogs: 2 })
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', blogs: 2 })
+    // console.log('Author with most Blogs:', result)
   })
 })
 
 describe('most likes', () => {
   const result = mostLikes(listWithOneBlog)
-  assert.deepStrictEqual(result, { author: 'Marius Covasevich', likes: 10 })
-  console.log('Author with most Likes:', result)
+  // assert.deepStrictEqual(result, { author: 'Marius Covasevich', likes: 10 })
+  expect(result).toEqual({ author: 'Marius Covasevich', likes: 10 })
+  // console.log('Author with most Likes:', result)
 })

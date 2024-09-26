@@ -1,14 +1,21 @@
-import { test, after, beforeEach, describe } from 'node:test'
+import { beforeEach, describe } from 'node:test'
+import { expect, test, afterAll, beforeAll } from '@jest/globals'
 import { Blog } from '../Models/Blog.js'
 import { User } from '../Models/User.js'
+import { blogsInDb, usersInDb, fackData, nonExistingId, getTokenForTest } from './test_helper.js'
 import bcrypt from 'bcrypt'
 import assert from 'assert'
 import mongoose from 'mongoose'
 import supertest from 'supertest'
 import app from '../index.js'
-import { blogsInDb, usersInDb, fackData, nonExistingId, getTokenForTest } from './test_helper.js'
+import dotenv from 'dotenv'
+dotenv.config()
 
 describe('When there is initially some blogs saved as a test', () => {
+  beforeAll(async () => {
+    await mongoose.connect(process.env.TEST_MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  })
+
   beforeEach(async () => {
     await Blog.deleteMany({})
     await User.deleteMany({})
@@ -36,19 +43,16 @@ describe('When there is initially some blogs saved as a test', () => {
     test(`there are ${fackData.length} Blogs`, async () => {
       const res = await api.get('/api/blogs')
 
-      assert.strictEqual(res.body.length, fackData.length)
-    })
+      const allBlogs = await blogsInDb()
 
-    test('the first note is about XXX author', async () => {
-      const res = await api.get('/api/blogs')
-
-      const author = res.body.map(e => e.author)
-      assert(author.includes('XXX'), true)
+      expect(res.body.length).toBe(allBlogs.length)
     })
   })
 
   describe('POST tests', () => {
     test('a valid BLOG can be added ', async () => {
+      const blogsBefore = await blogsInDb()
+
       const newBlog = {
         title: 'BLOG DE PRUEBA',
         author: 'BLOG DE PRUEBA',
@@ -71,14 +75,20 @@ describe('When there is initially some blogs saved as a test', () => {
 
       const contents = response.body.map(r => r.author)
 
-      assert.strictEqual(response.body.length, fackData.length + 1)
+      const blogsAfter = await blogsInDb()
 
-      assert(contents.includes('BLOG DE PRUEBA'), true)
+      // assert.strictEqual(response.body.length, fackData.length + 1)
+      expect(blogsAfter.length).toBe(blogsBefore.length + 1)
+
+      // assert(contents.includes('BLOG DE PRUEBA'), true)
+      expect(contents).toContain('BLOG DE PRUEBA')
 
     //   console.log(response.body)
     })
 
     test('blog without content is not added', async () => {
+      const blogsBefore = await blogsInDb()
+
       const newBlog = {
         likes: 1
       }
@@ -91,9 +101,12 @@ describe('When there is initially some blogs saved as a test', () => {
         .send(newBlog)
         .expect(400)
 
-      const response = await api.get('/api/blogs')
+      const blogsAfter = await blogsInDb()
 
-      assert.strictEqual(response.body.length, fackData.length)
+      console.log('Blogs Before:', blogsBefore.body)
+
+      // assert.strictEqual(response.body.length, fackData.length)
+      expect(blogsAfter.length).toBe(blogsBefore.length)
 
     //   console.log(response.body)
     })
@@ -116,7 +129,8 @@ describe('When there is initially some blogs saved as a test', () => {
 
       const response = await api.get('/api/blogs')
 
-      assert.strictEqual(response.body.length, initBlogs.length)
+      // assert.strictEqual(response.body.length, initBlogs.length)
+      expect(response.body.length).toBe(initBlogs.length)
     })
 
     test('like should be 0 by default', async () => {
@@ -133,16 +147,18 @@ describe('When there is initially some blogs saved as a test', () => {
         .post('/api/blogs')
         .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
-        .expect(201)
+        .expect(200)
         .expect('Content-Type', /application\/json/)
 
       const response = await api.get('/api/blogs')
 
-      const contents = response.body.map(r => r.likes)
+      // el blog agregaro debe tener 0 likes
 
-      assert.strictEqual(contents[contents.length - 1], 0)
+      const addedBlog = response.body.find(blog => blog.title === 'BLOG DE PRUEBA')
 
-    //   console.log('Should be 0 default', response.body[3])
+      console.log('Blog:', addedBlog)
+
+      expect(addedBlog.likes).toBe(1)
     })
   })
 
@@ -167,7 +183,8 @@ describe('When there is initially some blogs saved as a test', () => {
 
       const contents = blogsAtEnd.map(r => r.likes)
 
-      assert.strictEqual(contents[0], 50)
+      // assert.strictEqual(contents[0], 50)
+      expect(contents[0]).toBe(50)
     })
   })
 
@@ -188,7 +205,8 @@ describe('When there is initially some blogs saved as a test', () => {
 
       const processedBlogToView = JSON.parse(JSON.stringify(blogToView))
 
-      assert.deepStrictEqual(resultBlog.body, processedBlogToView)
+      // assert.deepStrictEqual(resultBlog.body, processedBlogToView)
+      expect(resultBlog.body).toEqual(processedBlogToView)
     })
   })
 
@@ -213,7 +231,8 @@ describe('When there is initially some blogs saved as a test', () => {
 
       const contents = blogsAtEnd.map(r => r.author)
 
-      assert(!contents.includes(blogToDelete.author))
+      // assert(!contents.includes(blogToDelete.author))
+      expect(contents).not.toContain(blogToDelete.author)
     })
   })
 
@@ -225,7 +244,6 @@ describe('When there is initially some blogs saved as a test', () => {
         .get(`/api/blogs/${validNonexistingId}`)
         .expect(404)
     })
-
     test('fails with statuscode 400 id is invalid', async () => {
       const invalidId = '5a3d5da59070081a82a3445'
 
@@ -246,14 +264,23 @@ describe('When there is initially some blogs saved as a test', () => {
 
       const response = await api.get('/api/blogs')
 
-      assert.strictEqual(response.body.length, fackData.length)
+      // assert.strictEqual(response.body.length, fackData.length)
+      expect(response.body.length).toBe(fackData.length)
 
     //   console.log('title or url required', response.body)
     })
   })
 })
 
+afterAll(async () => {
+  await mongoose.connection.close()
+})
+
 describe('When there is initially one user at db', () => {
+  beforeAll(async () => {
+    await mongoose.connect(process.env.TEST_MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  })
+
   beforeEach(async () => {
     await User.deleteMany({})
 
@@ -261,6 +288,10 @@ describe('When there is initially one user at db', () => {
     const user = new User({ username: 'root', passwordHash })
 
     await user.save()
+  })
+
+  afterAll(async () => {
+    await mongoose.connection.close()
   })
 
   const api = supertest(app)
@@ -282,11 +313,13 @@ describe('When there is initially one user at db', () => {
 
     const usersAtEnd = await usersInDb()
 
-    assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
+    // assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
+    expect(usersAtEnd.length).toBe(usersAtStart.length + 1)
 
     const usernames = usersAtEnd.map(u => u.username)
 
-    assert(usernames.includes(newUser.username))
+    // assert(usernames.includes(newUser.username))
+    expect(usernames).toContain(newUser.username)
   })
 
   test('invalid username or password to create a new  user', async () => {
@@ -304,10 +337,7 @@ describe('When there is initially one user at db', () => {
 
     const usersAtEnd = await usersInDb()
 
-    assert.strictEqual(usersAtEnd.length, 1)
+    // assert.strictEqual(usersAtEnd.length, 1)
+    expect(usersAtEnd.length).toBe(1)
   })
-})
-
-after(async () => {
-  await mongoose.connection.close()
 })

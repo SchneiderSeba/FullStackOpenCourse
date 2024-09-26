@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken'
 export const blogRouter = Router()
 
 blogRouter.get('/blogs', async (req, res) => {
-  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+  const blogs = await Blog.find({})
   res.json(blogs)
 })
 
