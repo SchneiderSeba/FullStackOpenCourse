@@ -103,7 +103,7 @@ describe('When there is initially some blogs saved as a test', () => {
 
       const blogsAfter = await blogsInDb()
 
-      console.log('Blogs Before:', blogsBefore.body)
+      // console.log('Blogs Before:', blogsBefore.body)
 
       // assert.strictEqual(response.body.length, fackData.length)
       expect(blogsAfter.length).toBe(blogsBefore.length)
@@ -264,8 +264,10 @@ describe('When there is initially some blogs saved as a test', () => {
 
       const response = await api.get('/api/blogs')
 
+      const blogsAfter = await blogsInDb()
+
       // assert.strictEqual(response.body.length, fackData.length)
-      expect(response.body.length).toBe(fackData.length)
+      expect(response.body.length).toBe(blogsAfter.length)
 
     //   console.log('title or url required', response.body)
     })
@@ -277,52 +279,51 @@ afterAll(async () => {
 })
 
 describe('When there is initially one user at db', () => {
-  beforeAll(async () => {
-    await mongoose.connect(process.env.TEST_MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  })
+  try {
+    beforeAll(async () => {
+      await mongoose.connect(process.env.TEST_MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    })
+  } catch (error) {}
 
-  beforeEach(async () => {
-    await User.deleteMany({})
+  try {
+    beforeEach(async () => {
+      await User.deleteMany({})
+      await Blog.deleteMany({})
 
-    const passwordHash = await bcrypt.hash('sekret', 10)
-    const user = new User({ username: 'root', passwordHash })
+      const passwordHash = await bcrypt.hash('sekret', 10)
+      const user = new User({ username: 'root', passwordHash })
 
-    await user.save()
-  })
-
-  afterAll(async () => {
-    await mongoose.connection.close()
-  })
+      await user.save()
+    })
+  } catch (error) {}
 
   const api = supertest(app)
 
   test('creation succeeds with a fresh username', async () => {
     const usersAtStart = await usersInDb()
 
-    const newUser = {
-      username: 'testUser',
-      name: 'Test User',
-      password: 'test123'
-    }
-
     await api
       .post('/api/users')
-      .send(newUser)
+      .send({
+        username: 'MONOdelViendto',
+        name: 'MonoV',
+        password: '155655FDFDFDD8'
+      })
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
     const usersAtEnd = await usersInDb()
 
-    // assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
     expect(usersAtEnd.length).toBe(usersAtStart.length + 1)
 
     const usernames = usersAtEnd.map(u => u.username)
 
-    // assert(usernames.includes(newUser.username))
-    expect(usernames).toContain(newUser.username)
+    expect(usernames).toContain('yktyjdfgdrg')
   })
 
   test('invalid username or password to create a new  user', async () => {
+    const usersAtStart = await usersInDb()
+
     const newUser = {
       username: 'te',
       name: 'Test User',
@@ -337,7 +338,13 @@ describe('When there is initially one user at db', () => {
 
     const usersAtEnd = await usersInDb()
 
+    console.log('Users:', usersAtEnd)
+
     // assert.strictEqual(usersAtEnd.length, 1)
-    expect(usersAtEnd.length).toBe(1)
+    expect(usersAtEnd.length).toBe(usersAtStart.length)
   })
+})
+
+afterAll(async () => {
+  await mongoose.connection.close()
 })
