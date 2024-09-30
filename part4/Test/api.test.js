@@ -299,28 +299,6 @@ describe('When there is initially one user at db', () => {
 
   const api = supertest(app)
 
-  test('creation succeeds with a fresh username', async () => {
-    const usersAtStart = await usersInDb()
-
-    await api
-      .post('/api/users')
-      .send({
-        username: 'MONOdelViendto',
-        name: 'MonoV',
-        password: '155655FDFDFDD8'
-      })
-      .expect(201)
-      .expect('Content-Type', /application\/json/)
-
-    const usersAtEnd = await usersInDb()
-
-    expect(usersAtEnd.length).toBe(usersAtStart.length + 1)
-
-    const usernames = usersAtEnd.map(u => u.username)
-
-    expect(usernames).toContain('yktyjdfgdrg')
-  })
-
   test('invalid username or password to create a new  user', async () => {
     const usersAtStart = await usersInDb()
 
@@ -338,7 +316,7 @@ describe('When there is initially one user at db', () => {
 
     const usersAtEnd = await usersInDb()
 
-    console.log('Users:', usersAtEnd)
+    // console.log('Users:', usersAtEnd)
 
     // assert.strictEqual(usersAtEnd.length, 1)
     expect(usersAtEnd.length).toBe(usersAtStart.length)

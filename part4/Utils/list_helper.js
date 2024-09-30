@@ -12,12 +12,28 @@ export const favoriteBlog = (blogs) => {
   return blogs.find(blog => blog.likes === maxLikes)
 }
 
+// export const mostBlogs = (blogs) => {
+//   const authors = blogs.map(blog => blog.author)
+//   const author = authors.sort((a, b) => authors.filter(author => author === a).length - authors.filter(author => author === b).length).pop()
+//   return {
+//     author,
+//     blogs: authors.filter(a => a === author).length
+//   }
+// }
+
 export const mostBlogs = (blogs) => {
-  const authors = blogs.map(blog => blog.author)
-  const author = authors.sort((a, b) => authors.filter(author => author === a).length - authors.filter(author => author === b).length).pop()
+  const blogCounts = blogs.reduce((counts, blog) => {
+    counts[blog.author] = (counts[blog.author] || 0) + 1
+    return counts
+  }, {})
+
+  const authorWithMostBlogs = Object.keys(blogCounts).reduce((a, b) =>
+    blogCounts[a] > blogCounts[b] ? a : b
+  )
+
   return {
-    author,
-    blogs: authors.filter(author => author === author).length
+    author: authorWithMostBlogs,
+    blogs: blogCounts[authorWithMostBlogs]
   }
 }
 
