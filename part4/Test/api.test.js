@@ -50,7 +50,7 @@ describe('When there is initially some blogs saved as a test', () => {
   })
 
   describe('POST tests', () => {
-    test('a valid BLOG can be added ', async () => {
+    test(' 4.10 a valid BLOG can be added ', async () => {
       const blogsBefore = await blogsInDb()
 
       const newBlog = {
@@ -68,7 +68,6 @@ describe('When there is initially some blogs saved as a test', () => {
         .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(201)
-        // agregar exoect para autorizacion jwt
         .expect('Content-Type', /application\/json/)
 
       const response = await api.get('/api/blogs')
@@ -77,10 +76,8 @@ describe('When there is initially some blogs saved as a test', () => {
 
       const blogsAfter = await blogsInDb()
 
-      // assert.strictEqual(response.body.length, fackData.length + 1)
       expect(blogsAfter.length).toBe(blogsBefore.length + 1)
 
-      // assert(contents.includes('BLOG DE PRUEBA'), true)
       expect(contents).toContain('BLOG DE PRUEBA')
 
     //   console.log(response.body)
@@ -91,6 +88,33 @@ describe('When there is initially some blogs saved as a test', () => {
 
       const newBlog = {
         likes: 1
+      }
+
+      const token = await getTokenForTest()
+
+      await api
+        .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
+        .send(newBlog)
+        .expect(400)
+
+      const blogsAfter = await blogsInDb()
+
+      // console.log('Blogs Before:', blogsBefore.body)
+
+      // assert.strictEqual(response.body.length, fackData.length)
+      expect(blogsAfter.length).toBe(blogsBefore.length)
+
+    //   console.log(response.body)
+    })
+
+    test('4.12 blog without url or title is not added', async () => {
+      const blogsBefore = await blogsInDb()
+
+      const newBlog = {
+        author: 'BLOG DE PRUEBA',
+        likes: 1,
+        user: '66f16dee6748ed9e6109a9df'
       }
 
       const token = await getTokenForTest()
@@ -133,7 +157,7 @@ describe('When there is initially some blogs saved as a test', () => {
       expect(response.body.length).toBe(initBlogs.length)
     })
 
-    test('like should be 0 by default', async () => {
+    test('4.11 like should be 0 by default', async () => {
       const newBlog = {
         title: 'BLOG DE PRUEBA',
         author: 'BLOG DE PRUEBA',
@@ -325,4 +349,30 @@ describe('When there is initially one user at db', () => {
 
 afterAll(async () => {
   await mongoose.connection.close()
+})
+
+describe('4.9', () => {
+  beforeAll(async () => {
+    await mongoose.connect(process.env.TEST_MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  })
+
+  beforeEach(async () => {
+    await User.deleteMany({})
+    await Blog.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', passwordHash })
+
+    await user.save()
+  })
+
+  describe(' 4.9 _id should be defined as a id', () => {
+    test('id is defined', async () => {
+      const users = await usersInDb()
+
+      const user = users[0]
+
+      expect(user.id).toBeDefined()
+    })
+  })
 })
