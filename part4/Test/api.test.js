@@ -11,7 +11,7 @@ import app from '../index.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
-describe('When there is initially some blogs saved as a test', () => {
+describe('API Calls GET,POST,PUT,UPDATA and DELETE', () => {
   beforeAll(async () => {
     await mongoose.connect(process.env.TEST_MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   })
@@ -258,6 +258,33 @@ describe('When there is initially some blogs saved as a test', () => {
       // assert(!contents.includes(blogToDelete.author))
       expect(contents).not.toContain(blogToDelete.author)
     })
+
+    test('fails with statuscode 401 if token is invalid', async () => {
+      await Blog.deleteMany({})
+      await User.deleteMany({})
+
+      const passwordHash = await bcrypt.hash('testpassword', 10)
+      const testUser = new User({ username: 'testUser', passwordHash })
+      await testUser.save()
+
+      for (const blog of fackData) {
+        const blogObject = new Blog({ ...blog, user: testUser._id })
+        await blogObject.save()
+      }
+
+      const blogsAtStart = await blogsInDb()
+
+      const blogToDelete = blogsAtStart[0]
+
+      await api
+        .delete(`/api/blogs/${blogToDelete._id}`)
+        .set('Authorization', 'Bearer FACK TOKEN')
+        .expect(401)
+
+      const blogsAtEnd = await blogsInDb()
+
+      expect(blogsAtEnd.length).toBe(blogsAtStart.length)
+    })
   })
 
   describe('ERRORS Validation tests', () => {
@@ -302,7 +329,7 @@ afterAll(async () => {
   await mongoose.connection.close()
 })
 
-describe('When there is initially one user at db', () => {
+describe('Test for Users Data Base', () => {
   try {
     beforeAll(async () => {
       await mongoose.connect(process.env.TEST_MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -323,27 +350,28 @@ describe('When there is initially one user at db', () => {
 
   const api = supertest(app)
 
-  test('invalid username or password to create a new  user', async () => {
-    const usersAtStart = await usersInDb()
+  describe('POST', () => {
+    test('invalid username or password to create a new  user', async () => {
+      const usersAtStart = await usersInDb()
 
-    const newUser = {
-      username: 'te',
-      name: 'Test User',
-      password: 'test123'
-    }
+      const newUser = {
+        username: 'te',
+        name: 'Test User',
+        password: 'test123'
+      }
 
-    await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(400)
-      .expect('Content-Type', /application\/json/)
+      await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
 
-    const usersAtEnd = await usersInDb()
+      const usersAtEnd = await usersInDb()
 
-    // console.log('Users:', usersAtEnd)
+      // console.log('Users:', usersAtEnd)
 
-    // assert.strictEqual(usersAtEnd.length, 1)
-    expect(usersAtEnd.length).toBe(usersAtStart.length)
+      expect(usersAtEnd.length).toBe(usersAtStart.length)
+    })
   })
 })
 
@@ -375,4 +403,8 @@ describe('4.9', () => {
       expect(user.id).toBeDefined()
     })
   })
+})
+
+afterAll(async () => {
+  await mongoose.connection.close()
 })

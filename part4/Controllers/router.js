@@ -20,7 +20,7 @@ blogRouter.get('/blogs/:id', async (req, res) => {
 
   if (blog) {
     res.json(blog)
-    console.log(blog)
+    // console.log(blog)
   } else {
     res.status(404).end()
   }

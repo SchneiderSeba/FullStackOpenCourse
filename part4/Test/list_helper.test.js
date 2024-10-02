@@ -75,7 +75,7 @@ describe('favoriteBlog', () => {
 describe('most blogs', () => {
   test('check author with most blogs', () => {
     const result = mostBlogs(blogs)
-    console.log(result)
+    // console.log(result)
     expect(result).toEqual({ author: 'Robert C. Martin', blogs: 3 })
   })
 })
