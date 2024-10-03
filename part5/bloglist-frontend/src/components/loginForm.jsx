@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react'
+import './loginForm.css'
 
 export const LoginForm = ({ handleLogin }) => {
 
@@ -9,6 +10,8 @@ const [password, setPassword] = useState('')
 const onSubmit = (event) => {
     event.preventDefault()
     handleLogin(username, password)
+    setUsername('')
+    setPassword('')
     }
 
 return (
@@ -37,12 +40,11 @@ return (
   )
 }
 
-  export const noteForm = () => (
-    <form onSubmit={addNote}>
-      <input
-        value={newNote}
-        onChange={handleNoteChange}
-      />
-      <button type="submit">save</button>
-    </form>  
+export const LoggedUser = ({ user, setUser }) => {
+  return (
+    <div className='loggedSection'>
+      <p>{user.name} is logged <span>IN</span></p>
+      <button onClick={() => setUser(null)}>Logout</button>
+    </div>
   )
+}

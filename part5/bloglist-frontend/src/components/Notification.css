@@ -1,0 +1,20 @@
+
+.error {
+    color: white;
+    border: 1px solid red;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: lightcoral;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.success {
+    color: green;
+    border: 1px solid green;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: lightgreen;
+    border-radius: 5px;
+    text-align: center;
+}
