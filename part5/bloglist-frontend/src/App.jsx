@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { getAll, setToken, createBlog } from './services/blogs.js'
 import { login } from './services/login.js'
 import { BlogSection, FormNewBlog } from './components/BlogSection.jsx'
-import { LoggedUser, LoginForm } from './components/loginForm.jsx'
+import { LoggedUser } from './components/loggedInfo.jsx'
+import { LoginForm } from './components/login.jsx'
 import { Footer } from './Footer.jsx'
 import { Notification } from './components/Notification.jsx'
 
@@ -54,7 +55,7 @@ const App = () => {
       setBlogs(blogs.concat(blog))
       setBlogAdded(`Blog ${newBlog.title} added`)
       setTimeout(() => {
-        setSuccessMessage(null)
+        setBlogAdded(null)
       }, 5000)
     } catch (error) {
       setErrorMessage('Error creating blog')
@@ -72,7 +73,7 @@ const App = () => {
 
       {blogAdded && <Notification message={blogAdded} type="success" />}
 
-      {user === null ? <Notification message='Please login to create a blog' /> : <LoggedUser user={user} setUser={setUser} />}
+      {user === null ? <Notification message='Please login to create a blog' type="before" /> : <LoggedUser user={user} setUser={setUser} />}
 
       {user !== null && <FormNewBlog handleCreateBlog={handleCreateBlog} />}
 

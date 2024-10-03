@@ -3,4 +3,12 @@
     margin: 5px;
     padding: 5px;
     background-color: #f0f0f0;
+    width: 80%;
+}
+
+.blog-ind p {
+    font-size: 1rem !important;
+    font-weight: bold !important;
+    color: #000000 !important;
+    margin: 5px;
 }
