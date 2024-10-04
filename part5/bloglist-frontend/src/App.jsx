@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { getAll, setToken, createBlog } from './services/blogs.js'
 import { login } from './services/login.js'
-import { BlogSection, FormNewBlog } from './components/BlogSection.jsx'
+import { BlogSection, FormNewBlog, ShowCreateBlog } from './components/BlogSection.jsx'
 import { LoggedUser } from './components/loggedInfo.jsx'
 import { LoginForm } from './components/login.jsx'
 import { Footer } from './Footer.jsx'
 import { Notification } from './components/Notification.jsx'
+import { ToggleBtn } from './components/ToggleBtn.jsx'
 
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
   const [blogAdded, setBlogAdded] = useState(false)
+  const [showCreateForm, setShowCreateForm] = useState(false)
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -65,6 +67,10 @@ const App = () => {
     }
   }
 
+  const handleToggle = () => {
+    setShowCreateForm(!showCreateForm)
+  }
+
   return (
     <>
       <h1>Blogs Website</h1>
@@ -75,7 +81,9 @@ const App = () => {
 
       {user === null ? <Notification message='Please login to create a blog' type="before" /> : <LoggedUser user={user} setUser={setUser} />}
 
-      {user !== null && <FormNewBlog handleCreateBlog={handleCreateBlog} />}
+      {user !== null && <ToggleBtn handleToggle={handleToggle} showCreateForm={showCreateForm}/>}
+
+      {showCreateForm && <FormNewBlog handleCreateBlog={handleCreateBlog}/>}
 
       {user === null ? <LoginForm handleLogin={handleLogin}/> : <BlogSection blogs={blogs} />}
       

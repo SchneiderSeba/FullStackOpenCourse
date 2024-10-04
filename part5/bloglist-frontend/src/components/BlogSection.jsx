@@ -13,6 +13,15 @@ export const BlogSection = ({ blogs }) => {
     )
 }
 
+export const ShowCreateBlog = ({ showCreateForm }) => {
+
+    return (
+        <div className={!showCreateForm ? 'createFormOff' : 'createFormOn'}>
+            <button>{showCreateForm ? 'Cancel' : 'Create'}</button>
+        </div>
+    )
+}
+
 export const FormNewBlog = ({ handleCreateBlog }) => {
 
     const [newBlog, setNewBlog] = useState({

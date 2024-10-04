@@ -9,3 +9,15 @@
   border: 1px solid #e0e0e0;
   width: 100%;
 }
+
+.createFormOff {
+  display: none;
+}
+
+.createFormOn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
