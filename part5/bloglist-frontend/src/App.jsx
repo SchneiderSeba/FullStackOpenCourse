@@ -15,6 +15,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [blogAdded, setBlogAdded] = useState(false)
   const [showCreateForm, setShowCreateForm] = useState(false)
+  const [viewContent, setViewContent] = useState(false)
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -71,6 +72,10 @@ const App = () => {
     setShowCreateForm(!showCreateForm)
   }
 
+  const handleView = () => {
+    setViewContent(!viewContent)
+  }
+
   return (
     <>
       <h1>Blogs Website</h1>
@@ -85,7 +90,7 @@ const App = () => {
 
       {showCreateForm && <FormNewBlog handleCreateBlog={handleCreateBlog}/>}
 
-      {user === null ? <LoginForm handleLogin={handleLogin}/> : <BlogSection blogs={blogs} />}
+      {user === null ? <LoginForm handleLogin={handleLogin}/> : <BlogSection blogs={blogs} viewContent={viewContent}  handleView={handleView}/>}
       
 
       <Footer user={user?.name}/>
