@@ -10,5 +10,20 @@
     font-size: 1rem !important;
     font-weight: bold !important;
     color: #000000 !important;
-    margin: 5px;
+    margin: 5px 2px;
 }
+
+.likes-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* Alinea los elementos verticalmente al centro */
+    margin: 2px;
+    padding: 5px;
+    justify-content: space-between;
+}
+
+.likes-container p {
+    margin-right: 0.1px;
+}
+
+

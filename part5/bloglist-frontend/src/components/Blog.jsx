@@ -16,7 +16,9 @@ export const Blog = ({ blog, viewContent, handleView }) => {
     {isVisible && 
       <div>
         <p>URL : {blog.url}</p>
-        <p>Likes : {blog.likes}</p><LikeBtn />
+          <div className='likes-container'>
+            <p>Likes : {blog.likes}</p><LikeBtn />
+          </div>
         <p>Author : {blog.author}</p>
       </div>
     }
