@@ -1,8 +1,9 @@
 import './Blog.css'
 import { useState } from 'react'
 import { LikeBtn } from './LikeBtn'
+import { DeleteBtn } from './DeleteBtn'
 
-export const Blog = ({ blog, handleUpdateBlog }) => {
+export const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog }) => {
 
   const [isVisible, setIsVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
@@ -13,6 +14,10 @@ export const Blog = ({ blog, handleUpdateBlog }) => {
     const updatedBlog = { ...blog, likes: likes + 1 }
     const returnedBlog = await handleUpdateBlog(blog._id, updatedBlog)
     setLikes(returnedBlog.likes)
+  }
+
+  const deleteBlog = async () => {
+  handleDeleteBlog(blog._id)
   }
 
   return (
@@ -29,7 +34,7 @@ export const Blog = ({ blog, handleUpdateBlog }) => {
           <div className='blogUrl'>
             <span className='icon'>🔗</span>
             <a href={blog.url} target="_blank" rel="noopener noreferrer">
-              {blog.url}
+              Link Here
             </a>
           </div>
           <div className='blogInfo'>
@@ -40,24 +45,11 @@ export const Blog = ({ blog, handleUpdateBlog }) => {
             <div className='likes'>
               <span>{likes} likes</span>
               <LikeBtn updateLikes={updateLikes}/>
+              <DeleteBtn handleDeleteBlog={deleteBlog}/>
             </div>
           </div>
         </div>
       )}
     </div>
-
-  // <div className="blog-ind">
-  //   <p>Titulo : {blog.title}<br/></p>
-  //   <button onClick={toggleVisibility}>{isVisible ? 'Hide'  : 'View'}</button>
-  //   {isVisible && 
-  //     <div>
-  //       <p>URL : {blog.url}</p>
-  //         <div className='likes-container'>
-  //           <p>Likes : {likes}</p><LikeBtn updateLikes={updateLikes}/>
-  //         </div>
-  //       <p>Author : {blog.author}</p>
-  //     </div>
-  //   }
-  // </div>
   )
 }

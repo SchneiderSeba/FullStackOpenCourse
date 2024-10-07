@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getAll, setToken, createBlog, updateBlog } from './services/blogs.js'
+import { getAll, setToken, createBlog, updateBlog, deleteBlog } from './services/blogs.js'
 import { login } from './services/login.js'
 import { BlogSection, FormNewBlog } from './components/BlogSection.jsx'
 import { LoggedUser } from './components/loggedInfo.jsx'
@@ -17,6 +17,7 @@ const App = () => {
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [viewContent, setViewContent] = useState(false)
   const [newLikes, setNewLikes] = useState(0)
+  const [refresher, setRefresher] = useState(false)
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -25,7 +26,7 @@ const App = () => {
       setBlogs(sortedBlogs)
     }
     fetchBlogs()
-  }, [])
+  }, [newLikes, refresher])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -37,7 +38,7 @@ const App = () => {
       setTimeout(() => {
         window.localStorage.removeItem('loggedBlogAppUser')
       }, 1000 * 20)
-    }, [newLikes])
+    }, [])
 
   const handleLogin = async (username, password) => {  
     try {
@@ -84,6 +85,19 @@ const App = () => {
     }
   }
 
+  const handleDeleteBlog = async (id) => {
+    try {
+      await deleteBlog(id)
+      setBlogs(blogs.filter(blog => blog.id !== id))
+      setRefresher(!refresher)
+    } catch (error) {
+      setErrorMessage('Error deleting blog')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   const handleToggle = () => {
     setShowCreateForm(!showCreateForm)
   }
@@ -106,7 +120,7 @@ const App = () => {
 
       {showCreateForm && <FormNewBlog handleCreateBlog={handleCreateBlog}/>}
 
-      {user === null ? <LoginForm handleLogin={handleLogin}/> : <BlogSection blogs={blogs} viewContent={viewContent}  handleView={handleView} handleUpdateBlog={handleUpdateBlog}/>}
+      {user === null ? <LoginForm handleLogin={handleLogin}/> : <BlogSection blogs={blogs} viewContent={viewContent}  handleView={handleView} handleUpdateBlog={handleUpdateBlog} handleDeleteBlog={handleDeleteBlog}/>}
       
 
       <Footer user={user?.name}/>

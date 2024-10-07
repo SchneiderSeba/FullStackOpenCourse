@@ -34,7 +34,7 @@
     background-color: #4a9eff;
     color: white;
     border: none;
-    padding: 8px 16px;
+    padding: 6px 8px;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -42,11 +42,13 @@
   
   .toggleButton:hover {
     background-color: #3a7fcf;
+    color: grey;
   }
   
   .blogContent {
     padding: 16px;
     margin: 0px 5px;
+    text-align: center;
   }
   
   .blogUrl {
@@ -77,6 +79,7 @@
     font-weight: bold;
     align-items: center;
     margin: 8px;
+    overflow: hidden;
   }
   
   .icon {
@@ -98,5 +101,24 @@
   .likeButton:hover {
     background-color: #45a049;
   }
+
+  .deleteBtn {
+    background: linear-gradient(135deg, #c03c18, #240808);
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    margin: 10px 0px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .deleteBtn:hover {
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+    transform: scale(1.05);
+  }
+  
 
 
