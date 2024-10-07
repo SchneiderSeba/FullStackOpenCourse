@@ -1,6 +1,7 @@
 
-export const LikeBtn = () => {
+export const LikeBtn = ({ updateLikes }) => {
+
     return (
-        <button>Like</button>
+        <button onClick={updateLikes}>Like</button>
     )
 }

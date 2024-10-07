@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { getAll, setToken, createBlog } from './services/blogs.js'
+import { getAll, setToken, createBlog, updateBlog } from './services/blogs.js'
 import { login } from './services/login.js'
-import { BlogSection, FormNewBlog, ShowCreateBlog } from './components/BlogSection.jsx'
+import { BlogSection, FormNewBlog } from './components/BlogSection.jsx'
 import { LoggedUser } from './components/loggedInfo.jsx'
 import { LoginForm } from './components/login.jsx'
 import { Footer } from './Footer.jsx'
@@ -16,6 +16,7 @@ const App = () => {
   const [blogAdded, setBlogAdded] = useState(false)
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [viewContent, setViewContent] = useState(false)
+  const [newLikes, setNewLikes] = useState(0)
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -24,6 +25,10 @@ const App = () => {
     }
     fetchBlogs()
   }, [])
+
+  // useEffect(() => {
+  //   getAll().then(initialBlogs => setBlogs(initialBlogs))
+  // }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -35,7 +40,7 @@ const App = () => {
       setTimeout(() => {
         window.localStorage.removeItem('loggedBlogAppUser')
       }, 1000 * 20)
-    }, [])
+    }, [newLikes])
 
   const handleLogin = async (username, password) => {  
     try {
@@ -68,6 +73,20 @@ const App = () => {
     }
   }
 
+  const handleUpdateBlog = async (id, upDateBlog) => {
+    try {
+      const returnedBlog = await updateBlog(id, upDateBlog)
+      setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+      setNewLikes(returnedBlog.likes)
+      return returnedBlog
+    } catch (error) {
+      setErrorMessage('Error updating blog')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   const handleToggle = () => {
     setShowCreateForm(!showCreateForm)
   }
@@ -90,7 +109,7 @@ const App = () => {
 
       {showCreateForm && <FormNewBlog handleCreateBlog={handleCreateBlog}/>}
 
-      {user === null ? <LoginForm handleLogin={handleLogin}/> : <BlogSection blogs={blogs} viewContent={viewContent}  handleView={handleView}/>}
+      {user === null ? <LoginForm handleLogin={handleLogin}/> : <BlogSection blogs={blogs} viewContent={viewContent}  handleView={handleView} handleUpdateBlog={handleUpdateBlog}/>}
       
 
       <Footer user={user?.name}/>

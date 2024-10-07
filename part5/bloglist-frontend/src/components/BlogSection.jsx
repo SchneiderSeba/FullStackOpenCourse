@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { Blog } from './Blog'
 import './BlogSection.css'
 
-export const BlogSection = ({ blogs, viewContent, handleView }) => {
+export const BlogSection = ({ blogs, viewContent, handleView, handleUpdateBlog }) => {
     return (
         <div className='blogSection'>
             <h2>Blogs</h2>
             {blogs.map(blog =>
-                <Blog key={blog._id} blog={blog} viewContent={viewContent} handleView={handleView}/>
+                <Blog key={blog._id} blog={blog} viewContent={viewContent} handleView={handleView} handleUpdateBlog={handleUpdateBlog}/>
             )}
         </div>
     )
