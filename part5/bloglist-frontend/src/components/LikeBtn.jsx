@@ -1,7 +1,8 @@
+import './BlogSection.css'
 
 export const LikeBtn = ({ updateLikes }) => {
 
     return (
-        <button onClick={updateLikes}>Like</button>
+        <button className="likeBtn" onClick={updateLikes}>Like 👍</button>
     )
 }

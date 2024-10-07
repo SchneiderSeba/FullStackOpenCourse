@@ -5,8 +5,9 @@
   align-items: center;
   justify-content: center;
   padding: 30px 0;
-  background-color: hsla(0, 80%, 90%, 0.718);
-  border: 1px solid #e0e0e0;
+  background: radial-gradient(circle at center, #000000 40%, #4d4d4d 80%, #505050 100%);
+  border: none;
+  border-radius: 10px;
   width: 100%;
 }
 
@@ -20,4 +21,22 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+}
+
+.likeBtn {
+  background: linear-gradient(135deg, #8e44ad, #3498db);
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  margin: 10px 0px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.likeBtn:hover {
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
 }

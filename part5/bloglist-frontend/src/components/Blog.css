@@ -1,29 +1,102 @@
-.blog-ind   {
-    border: 1px solid black;
-    margin: 5px;
-    padding: 5px;
-    background-color: #f0f0f0;
-    width: 80%;
-}
 
-.blog-ind p {
-    font-size: 1rem !important;
-    font-weight: bold !important;
-    color: #000000 !important;
-    margin: 5px 2px;
-}
-
-.likes-container {
+.blogCard {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    margin-bottom: 20px;
+    width: 200px;
+  }
+  
+  .blogCard:hover {
+    box-shadow: 0 6px 12px rgba(27, 240, 255, 0.15);
+  }
+  
+  .blogHeader {
     display: flex;
-    flex-direction: row;
-    align-items: center; /* Alinea los elementos verticalmente al centro */
-    margin: 2px;
-    padding: 5px;
     justify-content: space-between;
-}
-
-.likes-container p {
-    margin-right: 0.1px;
-}
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    margin: 0px 5px;
+  }
+  
+  .blogTitle {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #4a9eff;
+    margin: 0;
+  }
+  
+  .toggleButton {
+    background-color: #4a9eff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .toggleButton:hover {
+    background-color: #3a7fcf;
+  }
+  
+  .blogContent {
+    padding: 16px;
+    margin: 0px 5px;
+  }
+  
+  .blogUrl {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .blogUrl a {
+    color: #4a9eff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .blogUrl a:hover {
+    color: #3a7fcf;
+  }
+  
+  .blogInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 5px 0px 5px;
+  }
+  
+  .author, .likes {
+    display: flex;
+    font-weight: bold;
+    align-items: center;
+    margin: 8px;
+  }
+  
+  .icon {
+    margin-right: 8px 0px;
+    font-size: 1.1rem;
+  }
+  
+  .likeButton {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 12px;
+  }
+  
+  .likeButton:hover {
+    background-color: #45a049;
+  }
 
 
