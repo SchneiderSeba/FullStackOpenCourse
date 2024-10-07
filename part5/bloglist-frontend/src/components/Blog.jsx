@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { LikeBtn } from './LikeBtn'
 import { DeleteBtn } from './DeleteBtn'
 
-export const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog }) => {
+export const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog, user }) => {
 
   const [isVisible, setIsVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
@@ -45,7 +45,9 @@ export const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog }) => {
             <div className='likes'>
               <span>{likes} likes</span>
               <LikeBtn updateLikes={updateLikes}/>
-              <DeleteBtn handleDeleteBlog={deleteBlog}/>
+              {user && blog.user && user.id === blog.user.id && ( 
+                <DeleteBtn handleDeleteBlog={deleteBlog}/>
+              )}
             </div>
           </div>
         </div>

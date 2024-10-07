@@ -86,6 +86,7 @@ const App = () => {
   }
 
   const handleDeleteBlog = async (id) => {
+    window.confirm('Are you sure you want to delete this blog?')
     try {
       await deleteBlog(id)
       setBlogs(blogs.filter(blog => blog.id !== id))
@@ -120,7 +121,7 @@ const App = () => {
 
       {showCreateForm && <FormNewBlog handleCreateBlog={handleCreateBlog}/>}
 
-      {user === null ? <LoginForm handleLogin={handleLogin}/> : <BlogSection blogs={blogs} viewContent={viewContent}  handleView={handleView} handleUpdateBlog={handleUpdateBlog} handleDeleteBlog={handleDeleteBlog}/>}
+      {user === null ? <LoginForm handleLogin={handleLogin}/> : <BlogSection blogs={blogs} viewContent={viewContent}  handleView={handleView} handleUpdateBlog={handleUpdateBlog} handleDeleteBlog={handleDeleteBlog} user={user}/>}
       
 
       <Footer user={user?.name}/>
