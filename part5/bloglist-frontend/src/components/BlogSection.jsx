@@ -3,50 +3,50 @@ import { Blog } from './Blog'
 import './BlogSection.css'
 
 export const BlogSection = ({ blogs, viewContent, handleView, handleUpdateBlog, handleDeleteBlog, user }) => {
-    return (
-        <div className='blogSection'>
-            {blogs.map(blog =>
-                <Blog key={blog._id} blog={blog} 
-                        viewContent={viewContent} handleView={handleView} 
-                            handleUpdateBlog={handleUpdateBlog} handleDeleteBlog={handleDeleteBlog} user={user} />
-            )}
-        </div>
-    )
+  return (
+    <div className='blogSection'>
+      {blogs.map(blog =>
+        <Blog key={blog._id} blog={blog}
+          viewContent={viewContent} handleView={handleView}
+          handleUpdateBlog={handleUpdateBlog} handleDeleteBlog={handleDeleteBlog} user={user} />
+      )}
+    </div>
+  )
 }
 
 export const ShowCreateBlog = ({ showCreateForm }) => {
 
-    return (
-        <div className={!showCreateForm ? 'createFormOff' : 'createFormOn'}>
-            <button>{showCreateForm ? 'Cancel' : 'Create'}</button>
-        </div>
-    )
+  return (
+    <div className={!showCreateForm ? 'createFormOff' : 'createFormOn'}>
+      <button>{showCreateForm ? 'Cancel' : 'Create'}</button>
+    </div>
+  )
 }
 
 export const FormNewBlog = ({ handleCreateBlog }) => {
 
-    const [newBlog, setNewBlog] = useState({
-        title: '',
-        author: '',
-        url: ''
-    })
+  const [newBlog, setNewBlog] = useState({
+    title: '',
+    author: '',
+    url: ''
+  })
 
-    const onSubmit = (event) => {
-        event.preventDefault()
-        console.log('Creating new blog:', newBlog)
-        handleCreateBlog(newBlog)
-        setNewBlog({ title: '', author: '', url: '' })
-    }
+  const onSubmit = (event) => {
+    event.preventDefault()
+    console.log('Creating new blog:', newBlog)
+    handleCreateBlog(newBlog)
+    setNewBlog({ title: '', author: '', url: '' })
+  }
 
-    const handleNewBlog = (event) => {
-        const { name, value } = event.target
-        setNewBlog({ ...newBlog, [name]: value })
-    }
+  const handleNewBlog = (event) => {
+    const { name, value } = event.target
+    setNewBlog({ ...newBlog, [name]: value })
+  }
 
-    return (
+  return (
     <form onSubmit={onSubmit}>
       <div className='createForm'>
-      <h2>Create new blog</h2>
+        <h2>Create new blog</h2>
         <input type="text" name='title' value={newBlog.title} onChange={handleNewBlog} placeholder='Title'/>
         <input type="text" name='author' value={newBlog.author} onChange={handleNewBlog} placeholder='Author'/>
         <input type="text" name='url' value={newBlog.url} onChange={handleNewBlog} placeholder='URL'/>
@@ -54,5 +54,5 @@ export const FormNewBlog = ({ handleCreateBlog }) => {
       </div>
     </form>
 
-    ) 
+  )
 }

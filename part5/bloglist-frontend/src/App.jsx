@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react'
 import { getAll, setToken, createBlog, updateBlog, deleteBlog } from './services/blogs.js'
 import { login } from './services/login.js'
@@ -30,17 +31,20 @@ const App = () => {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
-      if (loggedUserJSON) {
-        const user = JSON.parse(loggedUserJSON)
-        setUser(user)
-        setToken(user.token)
-      }
-      setTimeout(() => {
-        window.localStorage.removeItem('loggedBlogAppUser')
-      }, 1000 * 20)
-    }, [])
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      setToken(user.token)
+    }
+    setTimeout(() => {
+      window.localStorage.removeItem('loggedBlogAppUser')
+      setUser(null)
+      console.log('Token eliminado, usuario deslogueado')
+      setRefresher(!refresher)
+    }, 1000 * 60)
+  }, [])
 
-  const handleLogin = async (username, password) => {  
+  const handleLogin = async (username, password) => {
     try {
       const user = await login({ username, password })
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
@@ -122,12 +126,12 @@ const App = () => {
       {showCreateForm && <FormNewBlog handleCreateBlog={handleCreateBlog}/>}
 
       {user === null ? <LoginForm handleLogin={handleLogin}/> : <BlogSection blogs={blogs} viewContent={viewContent}  handleView={handleView} handleUpdateBlog={handleUpdateBlog} handleDeleteBlog={handleDeleteBlog} user={user}/>}
-      
+
 
       <Footer user={user?.name}/>
-      
-    </> 
-    )
+
+    </>
+  )
 }
 
 export default App
