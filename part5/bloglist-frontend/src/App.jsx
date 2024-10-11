@@ -4,10 +4,11 @@ import { getAll, setToken, createBlog, updateBlog, deleteBlog } from './services
 import { login } from './services/login.js'
 import { BlogSection, FormNewBlog } from './components/BlogSection.jsx'
 import { LoggedUser } from './components/loggedInfo.jsx'
-import { LoginForm } from './components/login.jsx'
+import { LoginForm, SignUpForm } from './components/login.jsx'
 import { Footer } from './Footer.jsx'
 import { Notification } from './components/Notification.jsx'
 import { ToggleBtn } from './components/ToggleBtn.jsx'
+import { createNewUser } from './services/user.js'
 
 
 const App = () => {
@@ -57,6 +58,30 @@ const App = () => {
       }, 5000)
     }
     console.log('logging in with', username, password)
+  }
+
+  // const handleSignUp = async (username, name, password) => {
+  //   try {
+  //     const user = await createNewUser({ username, name, password })
+  //     window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+  //     setToken(user.token)
+  //     setUser(user)
+  //   } catch (error) {
+  //     setErrorMessage('Error creating user')
+  //     setTimeout(() => {
+  //       setErrorMessage(null)
+  //     }, 5000)
+  //   }
+  //   console.log('signing up with', username)
+  // }
+
+  const handleSignUp = async (userData) => {
+    try {
+      const newUser = await createNewUser(userData)
+      console.log('User created:', newUser)
+    } catch (error) {
+      console.error('Error creating user:', error)
+    }
   }
 
   const handleCreateBlog = async (newBlog) => {
@@ -125,8 +150,7 @@ const App = () => {
 
       {showCreateForm && <FormNewBlog handleCreateBlog={handleCreateBlog}/>}
 
-      {user === null ? <LoginForm handleLogin={handleLogin}/> : <BlogSection blogs={blogs} viewContent={viewContent}  handleView={handleView} handleUpdateBlog={handleUpdateBlog} handleDeleteBlog={handleDeleteBlog} user={user}/>}
-
+      {user === null ? <LoginForm handleLogin={handleLogin} handleSignUp={handleSignUp}/> : <BlogSection blogs={blogs} viewContent={viewContent}  handleView={handleView} handleUpdateBlog={handleUpdateBlog} handleDeleteBlog={handleDeleteBlog} user={user}/>}
 
       <Footer user={user?.name}/>
 
@@ -135,3 +159,5 @@ const App = () => {
 }
 
 export default App
+
+// TO DO : hace que cuando se crea un nuevo usuario de un aviso o se auto logee
