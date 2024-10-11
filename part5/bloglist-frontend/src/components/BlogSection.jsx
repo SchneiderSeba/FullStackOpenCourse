@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Blog } from './Blog'
 import './BlogSection.css'
+import PropTypes from 'prop-types'
 
 export const BlogSection = ({ blogs, viewContent, handleView, handleUpdateBlog, handleDeleteBlog, user }) => {
   return (
@@ -13,6 +14,16 @@ export const BlogSection = ({ blogs, viewContent, handleView, handleUpdateBlog, 
     </div>
   )
 }
+
+BlogSection.propTypes = {
+  blogs: PropTypes.array.isRequired,
+  viewContent: PropTypes.bool.isRequired,
+  handleView: PropTypes.func.isRequired,
+  handleUpdateBlog: PropTypes.func.isRequired,
+  handleDeleteBlog: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
+}
+
 
 export const ShowCreateBlog = ({ showCreateForm }) => {
 
