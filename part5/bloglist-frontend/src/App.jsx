@@ -78,9 +78,16 @@ const App = () => {
   const handleSignUp = async (userData) => {
     try {
       const newUser = await createNewUser(userData)
+      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(newUser))
+      setToken(newUser.token)
+      setUser(newUser)
       console.log('User created:', newUser)
     } catch (error) {
       console.error('Error creating user:', error)
+      setErrorMessage('Error creating user')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     }
   }
 
