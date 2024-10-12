@@ -45,10 +45,11 @@ const App = () => {
     }, 1000 * 60)
   }, [])
 
-  const handleLogin = async (username, password) => {
+  const handleLogin = async (username, password, id) => {
     try {
-      const user = await login({ username, password })
+      const user = await login({ username, password, id })
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+      console.log('User logged in:', user)
       setToken(user.token)
       setUser(user)
     } catch (error) {
@@ -59,21 +60,6 @@ const App = () => {
     }
     console.log('logging in with', username, password)
   }
-
-  // const handleSignUp = async (username, name, password) => {
-  //   try {
-  //     const user = await createNewUser({ username, name, password })
-  //     window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
-  //     setToken(user.token)
-  //     setUser(user)
-  //   } catch (error) {
-  //     setErrorMessage('Error creating user')
-  //     setTimeout(() => {
-  //       setErrorMessage(null)
-  //     }, 5000)
-  //   }
-  //   console.log('signing up with', username)
-  // }
 
   const handleSignUp = async (userData) => {
     try {
@@ -121,14 +107,24 @@ const App = () => {
     }
   }
 
-  const handleDeleteBlog = async (id) => {
-    window.confirm('Are you sure you want to delete this blog?')
+  const handleDeleteBlog = async (id, user) => {
+    if (!window.confirm('Are you sure you want to delete this blog?')) return
+
+    const blogToDelete = blogs.find(blog => blog.id === id)
+
+    if (blogToDelete.user.id !== user.id) {
+      setErrorMessage('You are not allowed to delete this blog')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+      return
+    }
     try {
       await deleteBlog(id)
       setBlogs(blogs.filter(blog => blog.id !== id))
       setRefresher(!refresher)
     } catch (error) {
-      setErrorMessage('Error deleting blog')
+      setErrorMessage('Only allowed to delete your own blogs')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -159,12 +155,10 @@ const App = () => {
 
       {user === null ? <LoginForm handleLogin={handleLogin} handleSignUp={handleSignUp}/> : <BlogSection blogs={blogs} viewContent={viewContent}  handleView={handleView} handleUpdateBlog={handleUpdateBlog} handleDeleteBlog={handleDeleteBlog} user={user}/>}
 
-      <Footer user={user?.name}/>
+      {user !== null && (<Footer user={user} />)}
 
     </>
   )
 }
 
 export default App
-
-// TO DO : hace que cuando se crea un nuevo usuario de un aviso o se auto logee

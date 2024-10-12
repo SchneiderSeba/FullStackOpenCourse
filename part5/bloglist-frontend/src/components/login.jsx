@@ -39,7 +39,7 @@ export const LoginForm = ({ handleLogin, handleSignUp }) => {
           />
         </div>
         <button type="submit">Login</button>
-        <button type="button" onClick={toggleVisibility}>Sign Up</button>
+        <button type="button" onClick={toggleVisibility} className='signupBtn'>Sign Up</button>
       </form>
     )
   )
@@ -101,7 +101,7 @@ export const SignUpForm = ({ handleSignUp }) => {
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">Sign Up</button>
+      <button type="submit" className='signupBtn'>Sign Up</button>
       <button type="button" onClick={toggleVisibility}>Login</button>
     </form>
   )
