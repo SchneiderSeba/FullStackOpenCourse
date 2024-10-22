@@ -17,7 +17,7 @@ export const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog, user }) => {
   }
 
   const deleteBlog = async () => {
-    handleDeleteBlog(blog.id)
+    handleDeleteBlog(blog.id, user.id)
   }
 
   return (
