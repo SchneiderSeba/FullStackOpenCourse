@@ -37,12 +37,15 @@ const App = () => {
       setUser(user)
       setToken(user.token)
     }
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       window.localStorage.removeItem('loggedBlogAppUser')
       setUser(null)
       console.log('Token eliminado, usuario deslogueado')
       setRefresher(!refresher)
     }, 1000 * 60)
+
+    return () => clearTimeout(timeoutId)
+
   }, [])
 
   const handleLogin = async (username, password, id) => {
