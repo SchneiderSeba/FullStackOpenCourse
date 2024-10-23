@@ -156,7 +156,7 @@ const App = () => {
 
       {showCreateForm && <FormNewBlog handleCreateBlog={handleCreateBlog}/>}
 
-      {user === null ? <LoginForm handleLogin={handleLogin} handleSignUp={handleSignUp}/> : <BlogSection blogs={blogs} viewContent={viewContent}  handleView={handleView} handleUpdateBlog={handleUpdateBlog} handleDeleteBlog={handleDeleteBlog} user={user}/>}
+      {user === null ? <LoginForm handleLogin={handleLogin} handleSignUp={handleSignUp} /> : <BlogSection blogs={blogs} viewContent={viewContent}  handleView={handleView} handleUpdateBlog={handleUpdateBlog} handleDeleteBlog={handleDeleteBlog} user={user}/>}
 
       {user !== null && (<Footer user={user} />)}
 

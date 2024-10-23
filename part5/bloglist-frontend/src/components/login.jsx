@@ -17,7 +17,7 @@ export const LoginForm = ({ handleLogin, handleSignUp }) => {
   }
 
   return (
-    isVisible ? ( <SignUpForm handleSignUp={handleSignUp} /> ) : (
+    isVisible ? ( <SignUpForm handleSignUp={handleSignUp} handleLogin={handleLogin} toggleVisibility={toggleVisibility}/> ) : (
 
       <form onSubmit={onSubmit}>
         <div>
@@ -49,7 +49,7 @@ LoginForm.propTypes = {
   handleLogin: PropTypes.func.isRequired
 }
 
-export const SignUpForm = ({ handleSignUp }) => {
+export const SignUpForm = ({ handleSignUp, handleLogin }) => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -71,39 +71,40 @@ export const SignUpForm = ({ handleSignUp }) => {
   }
 
   return (
+    isVisible ? ( <LoginForm  handleLogin={handleLogin} handleSignUp={handleSignUp}/> ) : (
+      <form onSubmit={onSubmit}>
+        <div>
+                Username
+          <input
+            type="text"
+            value={username}
+            name="Username"
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </div>
+        <div>
+                Name
+          <input
+            type="text"
+            value={name}
+            name="Name"
+            onChange={({ target }) => setName(target.value)}
+          />
+        </div>
 
-    <form onSubmit={onSubmit}>
-      <div>
-              Username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-              Name
-        <input
-          type="text"
-          value={name}
-          name="Name"
-          onChange={({ target }) => setName(target.value)}
-        />
-      </div>
-
-      <div>
-              Password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit" className='signupBtn'>Sign Up</button>
-      <button type="button" onClick={toggleVisibility}>Login</button>
-    </form>
+        <div>
+                Password
+          <input
+            type="password"
+            value={password}
+            name="Password"
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+        <button type="submit" className='signupBtn'>Sign Up</button>
+        <button type="button" onClick={toggleVisibility}>Login</button>
+      </form>
+    )
   )
 }
 
