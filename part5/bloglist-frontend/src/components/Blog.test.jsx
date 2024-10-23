@@ -6,7 +6,30 @@ import userEvent from '@testing-library/user-event'
 
 describe('Blog component', () => {
 
-  test('renders blog likes', async () => {
+  test('Render component Blog Close showing Title 5.13', async () => {
+    const blog = {
+      title: 'Test blog',
+      author: 'Test author',
+      url: 'Test url',
+      likes: 0,
+      user: {
+        id: 'testId'
+      }
+    }
+
+    const user = userEvent.setup({ user: { id : 'testId' } })
+
+    render(<Blog blog={blog} user={user}/>)
+
+    // screen.debug()
+
+    const element = screen.getByText('Test blog')
+
+    expect(element).toBeInTheDocument()
+
+  })
+
+  test('Render Component Blog Open showing likes & Link 5.14', async () => {
     const blog = {
       title: 'Test blog',
       author: 'Test author',
@@ -31,9 +54,17 @@ describe('Blog component', () => {
     const buttonLike = screen.getByText('Like 👍')
     await user.click(buttonLike)
 
-    // screen.debug()
+    const link = screen.getByText('Link Here')
+
+    const href = link.getAttribute('href')
 
     const element = screen.getByText('Test blog')
+
+    screen.debug()
+
+    expect(link).toBeInTheDocument()
+
+    expect(href).toBe('Test url')
 
     expect(element).toBeInTheDocument()
 
@@ -85,12 +116,11 @@ describe('Form check', () => {
 
     const component = render(<FormNewBlog handleCreateBlog={handleCreateBlog} />)
 
-    screen.debug()
+    // screen.debug()
 
     const inputTitle = component.getByPlaceholderText('Title')
     const inputAuthor = component.getByPlaceholderText('Author')
     const inputUrl = component.getByPlaceholderText('URL')
-    // const createBtn = component.getByRole('button', { name: 'Create' })
 
     await userEvent.type(inputTitle, 'Test title')
     await userEvent.type(inputAuthor, 'Test author')

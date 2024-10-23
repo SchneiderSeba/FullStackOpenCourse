@@ -19,4 +19,9 @@
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
+  transition: 0.3s ease;
+}
+
+.loggedSection button:hover {
+  background-color: #bd1919;
 }
