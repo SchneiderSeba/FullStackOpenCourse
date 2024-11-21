@@ -58,9 +58,9 @@ export const FormNewBlog = ({ handleCreateBlog }) => {
     <form onSubmit={onSubmit}>
       <div className='createForm'>
         <h2>Create new blog</h2>
-        <input type="text" name='title' value={newBlog.title} onChange={handleNewBlog} placeholder='Title'/>
-        <input type="text" name='author' value={newBlog.author} onChange={handleNewBlog} placeholder='Author'/>
-        <input type="text" name='url' value={newBlog.url} onChange={handleNewBlog} placeholder='URL'/>
+        <input data-testid='title' type="text" name='title' value={newBlog.title} onChange={handleNewBlog} placeholder='Title'/>
+        <input data-testid='author' type="text" name='author' value={newBlog.author} onChange={handleNewBlog} placeholder='Author'/>
+        <input data-testid='url' type="text" name='url' value={newBlog.url} onChange={handleNewBlog} placeholder='URL'/>
         <button type="submit">Create</button>
       </div>
     </form>

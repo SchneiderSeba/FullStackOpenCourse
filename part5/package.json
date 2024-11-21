@@ -1,0 +1,18 @@
+{
+  "name": "part5",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "testPW": "playwright test",
+    "test:report": "playwright show-report",
+    "start:test": "NODE_ENV=test node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.9.1"
+  }
+}

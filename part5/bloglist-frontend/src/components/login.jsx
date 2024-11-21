@@ -21,8 +21,9 @@ export const LoginForm = ({ handleLogin, handleSignUp }) => {
 
       <form onSubmit={onSubmit}>
         <div>
-              username
+              Username
           <input
+            data-testid='username'
             type="text"
             value={username}
             name="Username"
@@ -30,8 +31,9 @@ export const LoginForm = ({ handleLogin, handleSignUp }) => {
           />
         </div>
         <div>
-              password
+              Password
           <input
+            data-testid='password'
             type="password"
             value={password}
             name="Password"
@@ -76,6 +78,7 @@ export const SignUpForm = ({ handleSignUp, handleLogin }) => {
         <div>
                 Username
           <input
+            data-testid='username'
             type="text"
             value={username}
             name="Username"
@@ -85,6 +88,7 @@ export const SignUpForm = ({ handleSignUp, handleLogin }) => {
         <div>
                 Name
           <input
+            data-testid='name'
             type="text"
             value={name}
             name="Name"
@@ -95,6 +99,7 @@ export const SignUpForm = ({ handleSignUp, handleLogin }) => {
         <div>
                 Password
           <input
+            data-testid='password'
             type="password"
             value={password}
             name="Password"

@@ -150,7 +150,7 @@ const App = () => {
 
       {blogAdded && <Notification message={blogAdded} type="success" />}
 
-      {user === null ? <Notification message='Please login to See ower blogs' type="before" /> : <LoggedUser user={user} setUser={setUser} />}
+      {user === null ? <Notification message='Please login to See our blogs' type="before" /> : <LoggedUser user={user} setUser={setUser} />}
 
       {user !== null && <ToggleBtn handleToggle={handleToggle} showCreateForm={showCreateForm}/>}
 

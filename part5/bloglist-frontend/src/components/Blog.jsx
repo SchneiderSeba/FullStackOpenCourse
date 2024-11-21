@@ -24,7 +24,7 @@ export const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog, user }) => {
 
     <div className='blogCard'>
       <div className='blogHeader'>
-        <h2 className='blogTitle'>{blog.title}</h2>
+        <h2 data-testid='blog-title' className='blogTitle'>{blog.title}</h2>
         <button onClick={toggleVisibility} className='toggleButton'>
           {isVisible ? 'Hide' : 'View'}
         </button>
