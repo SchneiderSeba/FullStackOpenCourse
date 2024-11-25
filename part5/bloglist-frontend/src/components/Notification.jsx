@@ -5,7 +5,7 @@ export const Notification = ({ message, type }) => {
     return null
   }
   return (
-    <div className={type}>
+    <div className={type} data-testid="error-div">
       {message}
     </div>
   )

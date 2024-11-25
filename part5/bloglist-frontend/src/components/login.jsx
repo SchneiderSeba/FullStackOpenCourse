@@ -19,7 +19,7 @@ export const LoginForm = ({ handleLogin, handleSignUp }) => {
   return (
     isVisible ? ( <SignUpForm handleSignUp={handleSignUp} handleLogin={handleLogin} toggleVisibility={toggleVisibility}/> ) : (
 
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} role='form'>
         <div>
               Username
           <input
@@ -74,7 +74,7 @@ export const SignUpForm = ({ handleSignUp, handleLogin }) => {
 
   return (
     isVisible ? ( <LoginForm  handleLogin={handleLogin} handleSignUp={handleSignUp}/> ) : (
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} role='form'>
         <div>
                 Username
           <input

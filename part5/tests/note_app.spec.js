@@ -8,16 +8,27 @@ describe('Blogs app', () => {
         // await request.post('http://localhost:5173/api/testing/reset');
 
         await page.goto('http://localhost:5173');
+
         });
 
-    // test('front page can be opened', async ({ page }) => {
+    describe('5.17 Initial Form', () => {
+        test('front page can be opened', async ({ page }) => {
 
-    //     const locator = await page.getByText('Blogs Website');
-    //     await expect(locator).toBeVisible();
-    //     await expect(page.getByText('Blogs Website')).toBeVisible();
-    // })
+            await page.waitForSelector('form', { timeout: 60000 });
+
+            const content = await page.content();
+            console.log(content);
+
+            const locator = await page.getByRole('form');
+            await expect(locator).toBeVisible();
+            await expect(locator.getByTestId('username')).toBeVisible();
+            await expect(locator.getByTestId('password')).toBeVisible();
+            await expect(locator.getByRole('button', { name: 'Login' })).toBeVisible();
+        })
+    })
+
     describe('When Login', () => {
-        test('Login with a fake user' , async ({ page }) => {
+        test('Login with a Real user' , async ({ page }) => {
 
             // await page.fill('[data-testid="username"]', 'Dementor');
 
@@ -32,6 +43,21 @@ describe('Blogs app', () => {
             // await page.waitForSelector('text=Wrong Username or Password');
 
             await expect(page.getByText('Damian Martinez is logged as a Dementor')).toBeVisible();
+        })
+
+        test('5.18 Login with a Fake user' , async ({ page }) => {
+
+            // await page.fill('[data-testid="username"]', 'Dementor');
+
+            // await page.fill('[data-testid="password"]', '15673019');
+
+            // await page.click('button[type="submit"]');
+
+            await loginWith('Fake', '15673019', page);
+
+            const errorDiv = await page.locator('[data-testid="error-div"]:has-text("Wrong Username or Password")');
+            await expect(errorDiv).toBeVisible();
+
         })
 
         test('Add a new Blog' , async ({ page }) => {
