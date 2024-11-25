@@ -59,7 +59,7 @@ const App = () => {
       setErrorMessage('Wrong Username or Password')
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000)
+      }, 30000)
     }
     console.log('logging in with', username, password)
   }
@@ -110,10 +110,10 @@ const App = () => {
     }
   }
 
-  const handleDeleteBlog = async (id, user) => {
+  const handleDeleteBlog = async (_id, user) => {
     if (!window.confirm('Are you sure you want to delete this blog?')) return
 
-    const blogToDelete = blogs.find(blog => blog.id === id)
+    const blogToDelete = blogs.find(blog => blog._id === _id)
 
     if (blogToDelete.user.id !== user.id) {
       setErrorMessage('You are not allowed to delete this blog')
@@ -123,8 +123,8 @@ const App = () => {
       return
     }
     try {
-      await deleteBlog(id)
-      setBlogs(blogs.filter(blog => blog.id !== id))
+      await deleteBlog(_id)
+      setBlogs(blogs.filter(blog => blog._id !== _id))
       setRefresher(!refresher)
     } catch (error) {
       setErrorMessage('Only allowed to delete your own blogs')

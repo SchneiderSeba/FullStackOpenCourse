@@ -1,9 +1,11 @@
 import { test, describe, beforeEach, expect } from '@playwright/test';
+import { loginWith, createBlog } from './helper.js';
 
 describe('Blogs app', () => {
     beforeEach(async ({ page, request }) => {
         // Go to the starting page before each test.
-        await request.post('http://localhost:5173/api/testing/reset');
+        await request.post('https://blogsweb-production-89be.up.railway.app/api/testing/reset');
+        // await request.post('http://localhost:5173/api/testing/reset');
 
         await page.goto('http://localhost:5173');
         });
@@ -17,12 +19,13 @@ describe('Blogs app', () => {
     describe('When Login', () => {
         test('Login with a fake user' , async ({ page }) => {
 
-            await page.fill('[data-testid="username"]', 'Dementor');
-            await page.fill('[data-testid="password"]', '15673019');
+            // await page.fill('[data-testid="username"]', 'Dementor');
 
-            // await page.click('text=Sign Up');
+            // await page.fill('[data-testid="password"]', '15673019');
 
-            await page.click('button[type="submit"]');
+            // await page.click('button[type="submit"]');
+
+            await loginWith('Dementor', '15673019', page);
 
             await page.waitForSelector('text=Logout');
 
@@ -35,25 +38,29 @@ describe('Blogs app', () => {
 
             // await page.goto('http://localhost:5173');
                 
-                await page.fill('[data-testid="username"]', 'Dementor');
-                await page.fill('[data-testid="password"]', '15673019');
+                // await page.fill('[data-testid="username"]', 'Dementor');
+                // await page.fill('[data-testid="password"]', '15673019');
         
-                await page.click('button[type="submit"]');
+                // await page.click('button[type="submit"]');
+
+                await loginWith('Dementor', '15673019', page);
         
                 await page.waitForSelector('text=Logout');
         
-                await page.click('text=Create');
+                // await page.click('text=Create');
 
-                await page.waitForSelector('text=Create new blog');
+                // await page.waitForSelector('text=Create new blog');
         
-                await page.fill('[data-testid="title"]', 'USANDO TEST DATA');
-                await page.fill('[data-testid="author"]', 'Dementor');
+                // await page.fill('[data-testid="title"]', 'USANDO TEST DATA');
+                // await page.fill('[data-testid="author"]', 'Dementor');
         
-                await page.click('button[type="submit"]');
-        
-                await page.waitForSelector('[data-testid="blog-title"]:has-text("USANDO TEST DATA")');
+                // await page.click('button[type="submit"]');
 
-                    const blogElement = await page.locator('[data-testid="blog-title"]:has-text("USANDO TEST DATA")');
+                await createBlog('Usando Funciones Login y Crear', 'Dementor', page);
+        
+                await page.waitForSelector('[data-testid="blog-title"]:has-text("Usando Funciones Login y Crear")');
+
+                    const blogElement = await page.locator('[data-testid="blog-title"]:has-text("Usando Funciones Login y Crear")');
                     await expect(blogElement).toBeVisible();
         })
     })
