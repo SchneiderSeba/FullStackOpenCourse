@@ -154,5 +154,36 @@ describe('Blogs app', () => {
             const deletedBlog = await page.locator('.blogCard:has-text("DELETE")').count();
                 expect(deletedBlog).toBe(0);
         })
+
+        test('5.22 , Only the owner can see delete btn', async ({ page }) => {
+
+            await loginWith('Test', '15673019', page);
+
+            await createBlog('Can U See DeleteBtn ?', 'Test', page);
+
+            const blog = page.locator('.blogCard:has-text("Can U See DeleteBtn ?")');
+            await blog.waitFor({ timeout: 60000 });
+            await blog.scrollIntoViewIfNeeded();
+
+            const viewBtn = blog.locator('button:has-text("View")');
+            await viewBtn.click();
+
+            const deleteBtn = blog.locator('button:has-text("Delete")');
+
+            expect(deleteBtn).toBeVisible();
+            
+            //
+
+            const blog2 = page.locator('.blogCard:has-text("Token JWT")');
+            await blog2.waitFor({ timeout: 60000 });
+            await blog2.scrollIntoViewIfNeeded();
+
+            const viewBtn2 = blog2.locator('button:has-text("View")');
+            await viewBtn2.click();
+
+            const deleteBtn2 = blog2.locator('button:has-text("Delete")');
+
+            expect(deleteBtn2).toBeHidden();
+        })
     })
 })
