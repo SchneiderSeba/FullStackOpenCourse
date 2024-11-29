@@ -125,5 +125,34 @@ describe('Blogs app', () => {
             // Esperar a que el contador de likes se actualice
             await expect(likeCountLocator).toHaveText(`${initialLikes + 1} likes`);
         })
+
+        test('5.21 , delete blog', async ({ page }) => {
+
+            await loginWith('Test', '15673019', page);
+
+            await createBlog('DELETE', 'Test', page);
+
+            const blog = page.locator('.blogCard:has-text("DELETE")');
+            await blog.waitFor({ timeout: 60000 });
+            await blog.scrollIntoViewIfNeeded();
+
+            const viewBtn = blog.locator('button:has-text("View")');
+            await viewBtn.click();
+
+            const deleteBtn = blog.locator('button:has-text("Delete")');
+
+            // Interceptar y aceptar el cuadro de diálogo de confirmación
+            page.on('dialog', async dialog => {
+                console.log(dialog.message());
+                await dialog.accept();
+            });
+
+            await deleteBtn.click();
+
+            await page.waitForSelector('.blogCard:has-text("DELETE")', { state: 'detached' });
+
+            const deletedBlog = await page.locator('.blogCard:has-text("DELETE")').count();
+                expect(deletedBlog).toBe(0);
+        })
     })
 })
