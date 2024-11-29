@@ -185,5 +185,29 @@ describe('Blogs app', () => {
 
             expect(deleteBtn2).toBeHidden();
         })
+
+        test('5.23 , All Blogs are sorted by amount of likes', async ({ page }) => {
+
+            await loginWith('Test', '15673019', page);
+
+            const blogs = page.locator('.blogCard');
+
+            const likes = [];
+            const blogCount = await blogs.count();
+            for (let i = 0; i < blogCount; i++) {
+                const blog = blogs.nth(i);
+                const likeCountLocator = blog.locator('[data-testid="amountOfLikes"]');
+                const likesText = await likeCountLocator.textContent();
+                const likeCount = parseInt(likesText.split(' ')[0]);
+                likes.push(likeCount);
+            }
+
+            console.log(likes);
+
+            for (let i = 0; i < likes.length - 1; i++) {
+                expect(likes[i]).toBeGreaterThanOrEqual(likes[i + 1]);
+            }
+            
+        })
     })
 })
