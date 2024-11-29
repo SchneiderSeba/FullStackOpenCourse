@@ -44,7 +44,7 @@ export const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog, user }) => {
               <span>{blog.author}</span>
             </div>
             <div className='likes'>
-              <span>{likes} likes</span>
+              <span data-testid='amountOfLikes'>{likes} likes</span>
               <LikeBtn updateLikes={updateLikes}/>
               {user.id === blog.user && (
                 <DeleteBtn handleDeleteBlog={deleteBlog} />
