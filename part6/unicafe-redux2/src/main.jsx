@@ -67,9 +67,9 @@ const App = () => {
   return (
     <>
       <div>
-        <button onClick={good}>good</button>
-        <button onClick={ok}>ok</button>
-        <button onClick={bad}>bad</button>
+        <button onClick={good}>good 🔥</button>
+        <button onClick={ok}>ok 👍🏼</button>
+        <button onClick={bad}>bad 👎🏼</button>
         <button onClick={zero}>reset stats</button>
         <div>good {store.getState().good}</div>
         <div>ok {store.getState().ok}</div>
@@ -78,7 +78,7 @@ const App = () => {
       <div>
           <form onSubmit={addNote}>
             <input name="note" />
-            <button type="submit">add</button>
+            <button type="submit">add ➕</button>
           </form>
           <ul>
             {noteStore.getState().map(note => <li
@@ -86,7 +86,7 @@ const App = () => {
               
             >
               {note.content} <strong>{note.important ? 'important' : ''}</strong>
-              <button onClick={() => toggleImportance(note.id)}>toggle</button>
+              <button onClick={() => toggleImportance(note.id)}>🔁 Important</button>
             </li>
             )}
           </ul>
