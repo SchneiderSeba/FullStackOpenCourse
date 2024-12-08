@@ -1,8 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { createAnecdote, addVote } from './reducers/anecdoteReducer.js'
+import { createAnecdote } from './reducers/anecdoteReducer.js'
 import { createStore } from 'redux'
 import { useState } from 'react'
 import { reducer } from './reducers/anecdoteReducer.js'
+import { AnecdotesList } from './components/AnecdotesList.jsx'
 
 const store = createStore(reducer)
 
@@ -14,11 +15,6 @@ const App = () => {
 
   const refreshPage = () => {
     setRefresh(!refresh)
-  }
-
-  const vote = (id) => {
-    console.log('vote', id)
-    dispatch(addVote(id))
   }
 
   const addAnecdote = (event) => {
@@ -33,17 +29,7 @@ const App = () => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
-        <div key={anecdote.id}>
-          <div>
-            {anecdote.content}
-          </div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
-          </div>
-        </div>
-      )}
+      <AnecdotesList anecdotes={anecdotes} />
       <h2>create new</h2>
       <form onSubmit={addAnecdote}>
         <div><input name='anecdote'/></div>
