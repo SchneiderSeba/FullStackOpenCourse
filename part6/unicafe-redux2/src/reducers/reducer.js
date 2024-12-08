@@ -4,6 +4,21 @@ const initialState = {
   bad: 0
 }
 
+const initialStateNotes = [
+  {
+    content: 'reducer defines how redux store works',
+    important: true,
+    id: 1,
+    filter: 'ALL'
+  },
+  {
+    content: 'state of store can contain any data',
+    important: false,
+    id: 2,
+    filter: 'ALL'
+  },
+]
+
 export const counterReducer = (state = initialState, action) => {
   console.log(action)
   switch (action.type) {
@@ -22,7 +37,7 @@ export const counterReducer = (state = initialState, action) => {
   
 }
 
-export const noteReducer = (state = [], action) => {
+export const noteReducer = (state = initialStateNotes, action) => {
   switch (action.type) {
     case 'NEW_NOTE':
       return [...state, action.payload]

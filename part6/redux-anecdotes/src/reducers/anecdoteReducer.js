@@ -17,7 +17,10 @@ export const asObject = (anecdote) => {
   }
 }
 
-const initialState = anecdotesAtStart.map(asObject)
+const initialState = {
+  anecdotes: anecdotesAtStart.map(asObject),
+  filter: ''
+}
 
 export const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
@@ -26,15 +29,26 @@ export const reducer = (state = initialState, action) => {
   switch(action.type) {
     case 'VOTE': {
       const id = action.data.id
-      const anecdoteToVote = state.find(a => a.id === id)
+      const anecdoteToVote = state.anecdotes.find(a => a.id === id)
       const votedAnecdote = {
         ...anecdoteToVote,
         votes: anecdoteToVote.votes + 1
       }
-      return state.map(a => a.id !== id ? a : votedAnecdote)
+      return {
+        ...state,
+        anecdotes: state.anecdotes.map(a => a.id !== id ? a : votedAnecdote)
+      }
     }
     case 'NEW_ANECDOTE':
-      return [...state, action.data]
+      return {
+        ...state,
+        anecdotes: [...state.anecdotes, action.data]
+      }
+    case 'SET_FILTER':
+      return {
+        ...state,
+        filter: action.data
+      }
     default:
       return state
   }
@@ -55,5 +69,12 @@ export const addVote = (id) => {
   return {
     type: 'VOTE',
     data: { id }
+  }
+}
+
+export const setFilter = (filter) => {
+  return {
+    type: 'SET_FILTER',
+    data: filter
   }
 }
