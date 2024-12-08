@@ -12,7 +12,7 @@ export const AnecdotesForm = () => {
     return (
         <form onSubmit={addAnecdote}>
           <input name="anecdote" />
-          <button type="submit">add</button>
+          <button type="submit">add ➕</button>
         </form>
     )
 }

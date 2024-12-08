@@ -21,7 +21,7 @@ export const AnecdotesList = ({ anecdotes }) => {
                   </div>
                   <div>
                     has {anecdote.votes}
-                    <button onClick={() => vote(anecdote.id)}>vote</button>
+                    <button onClick={() => vote(anecdote.id)}>vote 👍🏼</button>
                   </div>
                 </div>
             )
