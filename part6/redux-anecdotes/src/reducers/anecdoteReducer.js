@@ -13,7 +13,8 @@ export const asObject = (anecdote) => {
   return {
     content: anecdote,
     id: getId(),
-    votes: 0
+    votes: 0,
+    filter: ''
   }
 }
 

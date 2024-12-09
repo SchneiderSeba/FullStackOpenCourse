@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { toggleImportanceOf } from '../reducers/reducer'
 
 export const Note = ({ note, toggleImportanceOf }) => {
     return (
