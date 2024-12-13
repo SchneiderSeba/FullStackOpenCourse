@@ -1,12 +1,12 @@
 import { useSelector } from 'react-redux'
 import { createStore } from 'redux'
 import { useState } from 'react'
-import { reducer } from './reducers/anecdoteReducer.js'
+import { anecdoteReducer } from './reducers/anecdoteReducer.js'
 import { AnecdotesList } from './components/AnecdotesList.jsx'
 import { AnecdotesForm } from './components/AnecdotesForm.jsx'
 import { Filter } from './components/filter.jsx'
 
-const store = createStore(reducer)
+const store = createStore(anecdoteReducer)
 
 const App = () => {
   const anecdotes = useSelector(state => state.anecdotes)

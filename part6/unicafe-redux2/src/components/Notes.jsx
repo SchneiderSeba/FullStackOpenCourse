@@ -27,9 +27,7 @@ export const Notes = ({ toggleImportanceOf }) => {
                     <Note
                         key={note.id}
                         note={note}
-                        toggleImportanceOf={() =>
-                            dispatch(toggleImportanceOf(note.id))
-                        }
+                        toggleImportanceOf={() => dispatch(toggleImportanceOf(note.id))}
                     />
                 )}
             </ul>
