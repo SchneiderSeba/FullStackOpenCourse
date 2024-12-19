@@ -1,4 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
+import { toggleImportanceOf } from '../reducers/reducer.js'
+import { filteredNotesSelector } from '../reducers/filterReducer.js'
 
 export const Note = ({ note, toggleImportanceOf }) => {
     return (
@@ -8,17 +10,24 @@ export const Note = ({ note, toggleImportanceOf }) => {
     )
 }
 
-export const Notes = ({ toggleImportanceOf }) => {
+export const Notes = () => {
     const dispatch = useDispatch()
-    const notes = useSelector(state => {  
-        if ( state.filter === 'ALL' ) {
-        return state.notes
-      }
-      return state.filter  === 'IMPORTANT' 
-        ? state.notes.filter(note => note.important)
-        : state.notes.filter(note => !note.important)
-    }) 
+    // const notes = useSelector(state => { 
+    //     if (!Array.isArray(state.notes)) {
+    //         console.error('state.notes no es un array:', state.notes)
+    //         console.log('state.notes:', state.notes)
+    //         return []
+    //       }
+        
+    //     if ( state.filter === 'ALL' ) {
+    //     return state.notes
+    //     }
+    //   return state.filter  === 'IMPORTANT' 
+    //     ? state.notes.filter(note => note.important)
+    //     : state.notes.filter(note => !note.important)
+    // }) 
 
+    const notes = useSelector(filteredNotesSelector)
 
     return (
         <div>

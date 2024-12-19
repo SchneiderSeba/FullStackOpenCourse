@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { createStore } from 'redux' // <-- Añadir createStore
-import { counterReducer, noteReducer, toggleImportanceOf, createNote } from './reducers/reducer.js'
+import { counterReducer, toggleImportanceOf, createNote, noteSlice } from './reducers/reducer.js'
 import { NewNote } from './components/NewNote.jsx'
 import { Notes } from './components/Notes.jsx'
 
 const store = createStore(counterReducer)
-const noteStore = createStore(noteReducer)
+// const noteStore = createStore(noteReducer)
 
 const App = () => {
 
@@ -16,7 +16,7 @@ const App = () => {
     }
   
     store.subscribe(refreshPage)
-    noteStore.subscribe(refreshPage)
+    // noteStore.subscribe(refreshPage)
   
     const good = () => {
       store.dispatch({
@@ -51,8 +51,10 @@ const App = () => {
           <div>bad {store.getState().bad}</div>
         </div>
 
-        <NewNote store={noteStore} />
-        <Notes store={noteStore} toggleImportanceOf={toggleImportanceOf} />
+        {/* <NewNote store={createNote} />
+        <Notes store={createNote} toggleImportanceOf={toggleImportanceOf} /> */}
+        <NewNote />
+        <Notes />
 
       </>
     )
