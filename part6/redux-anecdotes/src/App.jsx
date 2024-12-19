@@ -25,7 +25,7 @@ const App = () => {
       <h2>Anecdotes</h2>
       <Filter />
       <AnecdotesList anecdotes={anecdotes} />
-      <h2>create new</h2>
+      <h2>Create New</h2>
       <AnecdotesForm />
     </div>
   )
