@@ -16,8 +16,11 @@ export const AnecdotesList = () => {
         dispatch(voteNotification(anecdote.content))
       }
 
+    // const filteredAnecdotes = anecdotes.filter(anecdote =>
+    //   anecdote.content.toLowerCase().includes(filter.toLowerCase())
+    // )
     const filteredAnecdotes = anecdotes.filter(anecdote =>
-        anecdote.content.toLowerCase().includes(filter.toLowerCase())
+      anecdote.content && anecdote.content.toLowerCase().includes(filter.toLowerCase())
     )
 
     return(

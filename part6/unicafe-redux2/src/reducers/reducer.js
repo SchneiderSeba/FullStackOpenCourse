@@ -6,20 +6,20 @@ const initialState = {
   bad: 0
 }
 
-const initialStateNotes = [
-  {
-    content: 'reducer defines how redux store works',
-    important: true,
-    id: 1,
-    filter: 'ALL'
-  },
-  {
-    content: 'state of store can contain any data',
-    important: false,
-    id: 2,
-    filter: 'ALL'
-  },
-]
+// const initialStateNotes = [
+//   {
+//     content: 'reducer defines how redux store works',
+//     important: true,
+//     id: 1,
+//     filter: 'ALL'
+//   },
+//   {
+//     content: 'state of store can contain any data',
+//     important: false,
+//     id: 2,
+//     filter: 'ALL'
+//   },
+// ]
 
 export const counterReducer = (state = initialState, action) => {
   console.log(action)
@@ -62,7 +62,7 @@ const generateId = () =>
 
 export const noteSlice = createSlice({
   name: 'notes',
-  initialState: initialStateNotes,
+  initialState: [],
   reducers: {
     createNote: (state, action) => {
       const content = action.payload
@@ -86,10 +86,16 @@ export const noteSlice = createSlice({
       return state.map(note =>
         note.id !== id ? note : changedNote
       )
+    },
+    appendNotes: (state, action) => {
+      return state.push(action.payload)
+    },
+    setNote: (state, action) => {
+      return state = action.payload 
     }
   }
 })
 
-export const { createNote, toggleImportanceOf } = noteSlice.actions
+export const { createNote, toggleImportanceOf, appendNotes, setNote } = noteSlice.actions
 // export default noteSlice.reducer
 

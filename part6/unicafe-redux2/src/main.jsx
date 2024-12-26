@@ -2,10 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 // import { combineReducers, createStore } from 'redux'
 import { Provider } from 'react-redux'
-import { counterReducer, noteSlice } from './reducers/reducer.js'
+import { counterReducer, noteSlice, setNote } from './reducers/reducer.js'
 import { filterReducer } from './reducers/filterReducer.js'
 import App from './App'
 import { configureStore } from '@reduxjs/toolkit'
+import { appendNotes } from './reducers/reducer.js'
+import { getAll } from './services/notes.js'
 
 // const rootReducer = combineReducers({
 //   counter: counterReducer,
@@ -25,6 +27,13 @@ const store = configureStore({
 // store.subscribe(() => console.log(store.getState()))
 // store.dispatch(filterChange('IMPORTANT'))
 // store.dispatch(createNote('combineReducers forms one reducer from many simple reducers'))
+
+getAll().then(notes =>
+  notes.forEach(note => {
+    store.dispatch(setNote(notes))
+    }
+  )
+)
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
