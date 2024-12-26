@@ -6,7 +6,8 @@ import { anecdoteSlice } from './reducers/anecdoteReducer.js'
 import { AnecdotesList } from './components/AnecdotesList.jsx'
 import { AnecdotesForm } from './components/AnecdotesForm.jsx'
 import { Filter } from './components/filter.jsx'
-import { getAll } from '../services/anecdotes'
+// import { getAll } from '../services/anecdotes'
+import { initializerAnecdotes } from './reducers/anecdoteReducer.js'
 
 const store = createStore(anecdoteSlice.reducer)
 
@@ -16,9 +17,10 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    getAll().then(anecdotes =>
-      dispatch(anecdoteSlice.actions.setAnecdotes(anecdotes))
-    )
+    // getAll().then(anecdotes =>
+    //   dispatch(anecdoteSlice.actions.setAnecdotes(anecdotes))
+    // )
+    dispatch(initializerAnecdotes())
   }, [dispatch])
 
   const [refresh, setRefresh] = useState(false)

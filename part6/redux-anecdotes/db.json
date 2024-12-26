@@ -15,7 +15,7 @@
     {
       "id": "20970",
       "content": "The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.",
-      "votes": 0,
+      "votes": 1,
       "filter": ""
     },
     {
@@ -39,6 +39,12 @@
     {
       "id": "86852",
       "content": "FFFF",
+      "votes": 4,
+      "filter": ""
+    },
+    {
+      "id": "73311",
+      "content": "Damage",
       "votes": 0,
       "filter": ""
     }

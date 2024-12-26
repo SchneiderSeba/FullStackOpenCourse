@@ -1,7 +1,8 @@
-import { addVote } from '../reducers/anecdoteReducer.js'
+// import { addVote } from '../reducers/anecdoteReducer.js'
 import { voteNotification } from '../reducers/notificationReducer.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { Notification } from './Notification.jsx'
+import { updateVotes } from '../reducers/anecdoteReducer.js'
 
 export const AnecdotesList = () => {
 
@@ -12,7 +13,8 @@ export const AnecdotesList = () => {
 
     const vote = (anecdote) => {
         console.log('vote', anecdote)
-        dispatch(addVote(anecdote.id))
+        // dispatch(addVote(anecdote.id))
+        dispatch(updateVotes(anecdote.id))
         dispatch(voteNotification(anecdote.content))
       }
 
