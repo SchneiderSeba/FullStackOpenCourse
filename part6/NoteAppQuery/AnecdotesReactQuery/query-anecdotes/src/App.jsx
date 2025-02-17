@@ -18,7 +18,8 @@ const App = () => {
       setTimeout(() => {
         notificationDispatch({ type: 'CLEAR_NOTIFICATION' })
       }, 2000)
-    }})
+    }
+  })
 
   const { data, error, isLoading } = useQuery({
     queryKey: ['anecdotes'],
@@ -37,12 +38,12 @@ const App = () => {
     console.log(`create, ${content}`)
   }
 
-  if (isLoading) {
-    return <p>Loading...</p>
-  }
-  if (error) {
-    return <p>anecdote service not available due to problems in server</p>
-  }
+  // if (isLoading) {
+  //   return <p>Loading...</p>
+  // }
+  // if (error) {
+  //   return <p>anecdote service not available due to problems in server</p>
+  // }
 
   return (
       <div>

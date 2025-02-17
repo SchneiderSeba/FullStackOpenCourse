@@ -16,20 +16,23 @@ const AnecdoteForm = () => {
       setTimeout(() => {
         notificationDispatch({ type: 'CLEAR_NOTIFICATION' })
       }, 5000)
-    }
+     }
   })
 
   const onCreate = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     if (content.length < 5) {
-      alert('anecdote must be at least 5 characters long')
+      notificationDispatch({ type: 'CREATE_NOTIFICATION', notification: 'Anecdote content must be at least 5 characters long' })
+      setTimeout(() => {
+        notificationDispatch({ type: 'CLEAR_NOTIFICATION' })
+      }, 3000)
       return
     }
     event.target.anecdote.value = ''
     newAnecdoteMutation.mutate(content)
-    console.log('create', content)  
-}
+    console.log('create', content)
+  }
 
   return (
     <div>
