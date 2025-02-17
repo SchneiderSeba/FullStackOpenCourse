@@ -16,7 +16,11 @@ const App = () => {
   //     queryClient.invalidateQueries('anecdotes')
   //   } 
   // })
-  const voteMutation = useMutation({ mutationFn: voteAnecdote })
+  const voteMutation = useMutation({ 
+    mutationFn: voteAnecdote,
+    onSuccess: () => {
+      queryClient.invalidateQueries('anecdotes')
+    }})
 
   const { data, error, isLoading } = useQuery({
     queryKey: ['anecdotes'],
@@ -28,6 +32,7 @@ const App = () => {
 
   const handleVote = (anecdote) => {
     console.log(`vote for, ${anecdote.content}`)
+    voteMutation.mutate(anecdote)
   }
 
   const handleCreate = (content) => {
