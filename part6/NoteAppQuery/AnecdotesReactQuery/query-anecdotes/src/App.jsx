@@ -6,17 +6,16 @@ import { getAnecdotes, createAnecdote, voteAnecdote } from './service'
 
 const App = () => {
 
+  const queryClient = useQueryClient()
 
   const [votes, setVotes] = useState(0)
-  // const [anecdotes, setAnecdotes] = useState([{
-  //   "content": "If it hurts, do it more often",
-  //   "id": "47145",
-  //   "votes": 0
-  // },])
 
-  //-
-
-  const newAnecdoteMutation = useMutation({ mutationFn: createAnecdote })
+  // const newAnecdoteMutation = useMutation({ 
+  //   mutationFn: createAnecdote,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries('anecdotes')
+  //   } 
+  // })
   const voteMutation = useMutation({ mutationFn: voteAnecdote })
 
   const { data, error, isLoading } = useQuery({
@@ -29,13 +28,10 @@ const App = () => {
 
   const handleVote = (anecdote) => {
     console.log(`vote for, ${anecdote.content}`)
-    // const updatedAnecdote = {
-    //   ...anecdote,
-    //   votes: anecdote.votes + 1
-    // }
-    // console.log(updatedAnecdote)
-    // setAnecdotes([updatedAnecdote])
-    
+  }
+
+  const handleCreate = (content) => {
+    console.log(`create, ${content}`)
   }
 
   if (isLoading) {
