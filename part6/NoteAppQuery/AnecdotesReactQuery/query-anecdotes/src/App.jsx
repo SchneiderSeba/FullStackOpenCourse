@@ -2,24 +2,22 @@ import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getAnecdotes, createAnecdote, voteAnecdote } from './service'
+import { getAnecdotes, voteAnecdote } from './service'
+import { NotiContextProvider, useNotiContext } from './components/NotificationContex'
 
 const App = () => {
 
   const queryClient = useQueryClient()
+  const { notificationDispatch } = useNotiContext()
 
-  const [votes, setVotes] = useState(0)
-
-  // const newAnecdoteMutation = useMutation({ 
-  //   mutationFn: createAnecdote,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries('anecdotes')
-  //   } 
-  // })
   const voteMutation = useMutation({ 
     mutationFn: voteAnecdote,
-    onSuccess: () => {
+    onSuccess: (updatedAnecdote) => {
       queryClient.invalidateQueries('anecdotes')
+      notificationDispatch({ type: 'VOTE_NOTIFICATION', notification: `You voted for : ${updatedAnecdote.content}` })
+      setTimeout(() => {
+        notificationDispatch({ type: 'CLEAR_NOTIFICATION' })
+      }, 2000)
     }})
 
   const { data, error, isLoading } = useQuery({
@@ -46,34 +44,26 @@ const App = () => {
     return <p>anecdote service not available due to problems in server</p>
   }
 
-  // const anecdotes = [
-  //   {
-  //     "content": "If it hurts, do it more often",
-  //     "id": "47145",
-  //     "votes": 0
-  //   },
-  // ]
-
   return (
-    <div>
-      <h3>Anecdote app</h3>
-    
-      <Notification />
-      <AnecdoteForm />
-    
-      {Array.isArray(data) ? data.map(anecdote => (
-        <div key={anecdote.id}>
-          <div>
-            {anecdote.content}
+      <div>
+        <h3>Anecdote app</h3>
+      
+        <Notification />
+        <AnecdoteForm />
+      
+        {Array.isArray(data) ? data.map(anecdote => (
+          <div key={anecdote.id} style={{ marginBottom: '10px', marginTop: '10px' }}>
+            <div>
+              {anecdote.content}
+            </div>
+            <div>
+              has {anecdote.votes}
+              <button onClick={() => handleVote(anecdote)} style={{ marginLeft: "10px"}}>vote</button>
+            </div>
           </div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => handleVote(anecdote)}>vote</button>
-          </div>
-        </div>
-      )) : <p>No data available</p>}
+        )) : <p>No data available</p>}
 
-    </div>
+      </div>
   )
 }
 
