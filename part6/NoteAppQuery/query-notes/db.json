@@ -1,0 +1,74 @@
+{
+  "notes": [
+    {
+      "content": "the app state is in redux store",
+      "important": true,
+      "id": "1"
+    },
+    {
+      "content": "state changes are made with actions",
+      "important": false,
+      "id": "2"
+    },
+    {
+      "content": "state is stored in the backend",
+      "important": false,
+      "id": "3"
+    },
+    {
+      "id": "eff6",
+      "content": "GIF Gatitos",
+      "important": false
+    },
+    {
+      "id": "025e",
+      "content": "GATO",
+      "important": true
+    },
+    {
+      "id": "aad8",
+      "content": "FFF",
+      "important": false
+    },
+    {
+      "id": "37a8",
+      "content": "gff",
+      "important": false
+    },
+    {
+      "id": "6492",
+      "content": "CCC",
+      "important": false
+    },
+    {
+      "id": "f277",
+      "content": "SaaS",
+      "important": false
+    },
+    {
+      "id": "00c9",
+      "content": "NaN",
+      "important": false
+    },
+    {
+      "id": "9f53",
+      "content": "Non Alcoholic",
+      "important": true
+    },
+    {
+      "id": "5df6",
+      "content": "PEPEX1000",
+      "important": true
+    },
+    {
+      "id": "a653",
+      "content": "Ultima",
+      "important": true
+    },
+    {
+      "id": "0f23",
+      "content": "UltimaUltima",
+      "important": true
+    }
+  ]
+}
