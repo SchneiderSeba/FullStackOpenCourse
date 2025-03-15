@@ -26,25 +26,25 @@ const anecdotes = [
 
 const router = createBrowserRouter([
     {
-        path: '/',
+        path: '/*',
         element: <App anecdotes={anecdotes} />
     },
-    {
-        path: '/anecdote/:id',
-        element: <Anecdote anecdote={anecdotes} />
-    },
-    {
-        path: '/create',
-        element: <CreateNew />
-    },
-    {
-        path: '/about',
-        element: <About />
-    },
-    {
-        path: 'footer',
-        element: <Footer />
-    }
+    // {
+    //     path: '/anecdote/:id',
+    //     element: <Anecdote anecdote={anecdotes} />
+    // },
+    // {
+    //     path: '/create',
+    //     element: <CreateNew />
+    // },
+    // {
+    //     path: '/about',
+    //     element: <About />
+    // },
+    // {
+    //     path: 'footer',
+    //     element: <Footer />
+    // }
 
 ])
 

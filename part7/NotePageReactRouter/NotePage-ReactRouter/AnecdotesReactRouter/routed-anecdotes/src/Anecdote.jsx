@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
-export const Anecdote = ({ anecdote }) => {
+export const Anecdote = ({ anecdotes}) => {
     const { id } = useParams()
-    const anecdoteToShow = anecdote.find(a => a.id === Number(id))
+    const anecdoteToShow = anecdotes.find(a => a.id === Number(id))
 
     if (!anecdoteToShow) {
         return <p>No anecdotes available</p>

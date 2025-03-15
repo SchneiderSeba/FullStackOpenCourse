@@ -1,4 +1,4 @@
-import { Anecdote } from "./Anecdote"
+
 import { Link } from "react-router-dom";
 
 export const AnecdoteList = ({ anecdotes }) => {
