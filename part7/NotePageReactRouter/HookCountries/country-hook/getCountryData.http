@@ -1,0 +1,3 @@
+### Get country data
+GET https://studies.cs.helsinki.fi/restcountries/api/name/finland
+Content-Type: application/json
