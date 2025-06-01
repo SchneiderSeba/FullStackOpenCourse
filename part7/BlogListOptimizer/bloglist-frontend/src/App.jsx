@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setNotification, clearNotification } from './Slices/NotificationSlice.jsx'
 import {
   getAll,
   setToken,
@@ -25,6 +27,9 @@ const App = () => {
   const [viewContent, setViewContent] = useState(false)
   const [newLikes, setNewLikes] = useState(0)
   const [refresher, setRefresher] = useState(false)
+  const dispatch = useDispatch()
+  const notification = useSelector((state) => state.notification)
+  const { message, type } = notification
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -57,13 +62,23 @@ const App = () => {
       const user = await login({ username, password, id })
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
       console.log('User logged in:', user)
+      dispatch(setNotification({ message: 'Login successful', type: 'success' }))
+      setTimeout(() => {
+        dispatch(clearNotification())
+      }, 3000)
+      setShowCreateForm(false)
+      setRefresher(!refresher)
       setToken(user.token)
       setUser(user)
     } catch (error) {
-      setErrorMessage('Wrong Username or Password')
+      // setErrorMessage('Wrong Username or Password')
+      // setTimeout(() => {
+      //   setErrorMessage(null)
+      // }, 30000)
+      dispatch(setNotification({ message: 'Wrong Username or Password', type: 'error' }))
       setTimeout(() => {
-        setErrorMessage(null)
-      }, 30000)
+        dispatch(clearNotification())
+      }, 3000)
     }
     console.log('logging in with', username, password)
   }
@@ -75,12 +90,22 @@ const App = () => {
       setToken(newUser.token)
       setUser(newUser)
       console.log('User created:', newUser)
+      dispatch(setNotification({ message: 'User created successfully', type: 'success' }))
+      setTimeout(() => {
+        dispatch(clearNotification())
+      }, 3000)
+      setShowCreateForm(false)
+      setRefresher(!refresher)
     } catch (error) {
       console.error('Error creating user:', error)
-      setErrorMessage('Error creating user')
+      // setErrorMessage('Error creating user')
+      // setTimeout(() => {
+      //   setErrorMessage(null)
+      // }, 5000)
+      dispatch(setNotification({ message: 'Error creating user', type: 'error' }))
       setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+        dispatch(clearNotification())
+      }, 3000)
     }
   }
 
@@ -88,15 +113,25 @@ const App = () => {
     try {
       const blog = await createBlog(newBlog)
       setBlogs(blogs.concat(blog))
-      setBlogAdded(`Blog ${newBlog.title} added`)
+      // setBlogAdded(`Blog ${newBlog.title} added`)
+      // setTimeout(() => {
+      //   setBlogAdded(null)
+      // }, 5000)
+      dispatch(setNotification({ message: `Blog ${newBlog.title} added`, type: 'success' }))
       setTimeout(() => {
-        setBlogAdded(null)
-      }, 5000)
+        dispatch(clearNotification())
+      }, 3000)
+      setShowCreateForm(false)
+      setRefresher(!refresher)
     } catch (error) {
-      setErrorMessage('Error creating blog')
+      // setErrorMessage('Error creating blog')
+      // setTimeout(() => {
+      //   setErrorMessage(null)
+      // }, 5000)
+      dispatch(setNotification({ message: 'Error creating blog', type: 'error' }))
       setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+        dispatch(clearNotification())
+      }, 3000)
     }
   }
 
@@ -105,12 +140,22 @@ const App = () => {
       const returnedBlog = await updateBlog(id, upDateBlog)
       setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)))
       setNewLikes(returnedBlog.likes)
+      dispatch(setNotification({ message: `Blog ${returnedBlog.title} updated`, type: 'success' }))
+      setTimeout(() => {
+        dispatch(clearNotification())
+      }, 3000)
+      setRefresher(!refresher)
+      setViewContent(false)
       return returnedBlog
     } catch (error) {
-      setErrorMessage('Error updating blog')
+      // setErrorMessage('Error updating blog')
+      // setTimeout(() => {
+      //   setErrorMessage(null)
+      // }, 5000)
+      dispatch(setNotification({ message: 'Error updating blog', type: 'error' }))
       setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+        dispatch(clearNotification())
+      }, 3000)
     }
   }
 
@@ -120,21 +165,35 @@ const App = () => {
     const blogToDelete = blogs.find((blog) => blog._id === _id)
 
     if (blogToDelete.user.id !== user.id) {
-      setErrorMessage('You are not allowed to delete this blog')
+      // setErrorMessage('You are not allowed to delete this blog')
+      // setTimeout(() => {
+      //   setErrorMessage(null)
+      // }, 5000)
+      dispatch(setNotification({ message: 'You are not allowed to delete this blog', type: 'error' }))
       setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+        dispatch(clearNotification())
+      }
+      , 3000)
       return
     }
     try {
       await deleteBlog(_id)
       setBlogs(blogs.filter((blog) => blog._id !== _id))
       setRefresher(!refresher)
-    } catch (error) {
-      setErrorMessage('Only allowed to delete your own blogs')
+      dispatch(setNotification({ message: `Blog ${blogToDelete.title} deleted`, type: 'success' }))
       setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+        dispatch(clearNotification())
+      }, 3000)
+      setViewContent(false)
+    } catch (error) {
+      // setErrorMessage('Only allowed to delete your own blogs')
+      // setTimeout(() => {
+      //   setErrorMessage(null)
+      // }, 5000)
+      dispatch(setNotification({ message: 'Only allowed to delete your own blogs', type: 'error' }))
+      setTimeout(() => {
+        dispatch(clearNotification())
+      }, 3000)
     }
   }
 
@@ -150,15 +209,13 @@ const App = () => {
     <>
       <h1>Blogs Website</h1>
 
-      {errorMessage && <Notification message={errorMessage} type="error" />}
+      <Notification />
 
-      {blogAdded && <Notification message={blogAdded} type="success" />}
+      {/* {errorMessage && <Notification message={errorMessage} type="error" />}
 
-      {user === null ? (
-        <Notification message="Please login to See our blogs" type="before" />
-      ) : (
-        <LoggedUser user={user} setUser={setUser} />
-      )}
+      {blogAdded && <Notification message={blogAdded} type="success" />} */}
+
+      {user !== null && <LoggedUser user={user} setUser={setUser} />}
 
       {user !== null && (
         <ToggleBtn
