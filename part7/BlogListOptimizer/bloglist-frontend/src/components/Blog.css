@@ -1,0 +1,121 @@
+.blogCard {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  margin: 20px auto;
+  width: 200px;
+}
+
+.blogCard:hover {
+  box-shadow: 0 6px 12px rgba(27, 240, 255, 0.15);
+}
+
+.blogHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  margin: 0px 5px;
+}
+
+.blogTitle {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #4a9eff;
+  margin: 0;
+}
+
+.toggleButton {
+  background-color: #4a9eff;
+  color: white;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.toggleButton:hover {
+  background-color: #3a7fcf;
+  color: grey;
+}
+
+.blogContent {
+  padding: 16px;
+  margin: 0px 5px;
+  text-align: center;
+}
+
+.blogUrl {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.blogUrl a {
+  color: #4a9eff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.blogUrl a:hover {
+  color: #3a7fcf;
+}
+
+.blogInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 5px 0px 5px;
+}
+
+.author,
+.likes {
+  display: flex;
+  font-weight: bold;
+  align-items: center;
+  margin: 8px;
+  overflow: hidden;
+}
+
+.icon {
+  margin-right: 8px 0px;
+  font-size: 1.1rem;
+}
+
+.likeButton {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 12px;
+}
+
+.likeButton:hover {
+  background-color: #45a049;
+}
+
+.deleteBtn {
+  background: linear-gradient(135deg, #c03c18, #240808);
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  margin: 10px 0px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.deleteBtn:hover {
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+}

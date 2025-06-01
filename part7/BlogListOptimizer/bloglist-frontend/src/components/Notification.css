@@ -1,0 +1,29 @@
+.error {
+  color: white;
+  border: 1px solid red;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: lightcoral;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.success {
+  color: green;
+  border: 1px solid green;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: lightgreen;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.before {
+  color: rgba(173, 173, 173, 0.733);
+  border: 1px solid rgba(199, 199, 199, 0.795);
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: rgba(75, 80, 75, 0.747);
+  border-radius: 5px;
+  text-align: center;
+}
