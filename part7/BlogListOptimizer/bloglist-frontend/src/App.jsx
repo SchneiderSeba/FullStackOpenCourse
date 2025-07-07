@@ -13,6 +13,7 @@ import { ToggleBtn } from './components/ToggleBtn.jsx'
 import { createNewUser } from './services/user.js'
 import { setNewBlog, clearNewBlog } from './Slices/CreateBlogSlice.jsx'
 import { setLoginCredentials, clearLoginCredentials } from './Slices/loginSlice.jsx'
+import { Users } from './components/Users.jsx'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -26,6 +27,7 @@ const App = () => {
   const dispatch = useDispatch()
   const notification = useSelector((state) => state.notification)
   const { message, type } = notification
+  const [showUsers, setShowUsers] = useState(false)
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -209,6 +211,15 @@ const App = () => {
     setViewContent(!viewContent)
   }
 
+  const handleShowUsers = () => {
+    setShowUsers(!showUsers)
+    //timer to reset state//
+    setTimeout(() => {
+      setShowUsers(false)
+    }, 15000)
+
+  }
+
   return (
     <>
       <h1>Blogs Website</h1>
@@ -229,6 +240,8 @@ const App = () => {
       )}
 
       {showCreateForm && <FormNewBlog handleCreateBlog={handleCreateBlog} />}
+
+      {user && <Users handleShowUsers={handleShowUsers} showUsers={showUsers} user={user} blogs={blogs} />}
 
       {user === null ? (
         <LoginForm handleLogin={handleLogin} handleSignUp={handleSignUp} />
