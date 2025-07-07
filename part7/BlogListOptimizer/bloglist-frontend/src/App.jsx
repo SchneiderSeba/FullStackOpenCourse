@@ -2,13 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotification, clearNotification } from './Slices/NotificationSlice.jsx'
-import {
-  getAll,
-  setToken,
-  createBlog,
-  updateBlog,
-  deleteBlog,
-} from './services/blogs.js'
+import { getAll, setToken, createBlog, updateBlog, deleteBlog } from './services/blogs.js'
 import { login } from './services/login.js'
 import { BlogSection, FormNewBlog } from './components/BlogSection.jsx'
 import { LoggedUser } from './components/loggedInfo.jsx'
@@ -17,6 +11,8 @@ import { Footer } from './Footer.jsx'
 import { Notification } from './components/Notification.jsx'
 import { ToggleBtn } from './components/ToggleBtn.jsx'
 import { createNewUser } from './services/user.js'
+import { setNewBlog, clearNewBlog } from './Slices/CreateBlogSlice.jsx'
+import { setLoginCredentials, clearLoginCredentials } from './Slices/loginSlice.jsx'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -59,6 +55,8 @@ const App = () => {
 
   const handleLogin = async (username, password, id) => {
     try {
+
+      dispatch(setLoginCredentials({ username, password, id }))
       const user = await login({ username, password, id })
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
       console.log('User logged in:', user)
@@ -77,6 +75,7 @@ const App = () => {
       // }, 30000)
       dispatch(setNotification({ message: 'Wrong Username or Password', type: 'error' }))
       setTimeout(() => {
+        dispatch(clearLoginCredentials())
         dispatch(clearNotification())
       }, 3000)
     }
@@ -111,8 +110,12 @@ const App = () => {
 
   const handleCreateBlog = async (newBlog) => {
     try {
+
       const blog = await createBlog(newBlog)
       setBlogs(blogs.concat(blog))
+      dispatch(setNewBlog(blog))
+      // const blog = await createBlog(newBlog)
+
       // setBlogAdded(`Blog ${newBlog.title} added`)
       // setTimeout(() => {
       //   setBlogAdded(null)
