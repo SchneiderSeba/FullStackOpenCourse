@@ -56,8 +56,9 @@ const App = () => {
   const handleLogin = async (username, password, id) => {
     try {
 
-      dispatch(setLoginCredentials({ username, password, id }))
       const user = await login({ username, password, id })
+      dispatch(setLoginCredentials({ user }))
+      // dispatch(setLoginCredentials({ username, password, id }))
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
       console.log('User logged in:', user)
       dispatch(setNotification({ message: 'Login successful', type: 'success' }))
