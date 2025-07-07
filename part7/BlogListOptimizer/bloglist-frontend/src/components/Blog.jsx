@@ -17,7 +17,7 @@ export const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog, user }) => {
 
   const deleteBlog = async () => {
     // handleDeleteBlog(blog.id, user.id)
-    handleDeleteBlog(blog._id, user.id)
+    handleDeleteBlog(blog._id, user._id)
   }
 
   return (
@@ -46,7 +46,7 @@ export const Blog = ({ blog, handleUpdateBlog, handleDeleteBlog, user }) => {
             <div className="likes">
               <span data-testid="amountOfLikes">{likes} likes</span>
               <LikeBtn updateLikes={updateLikes} />
-              {user.id === blog.user && (
+              {user._id === blog.user && (
                 <DeleteBtn handleDeleteBlog={deleteBlog} />
               )}
             </div>
