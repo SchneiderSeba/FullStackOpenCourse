@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import notificationReducer from './Slices/NotificationSlice.jsx'
 import createBlogReducer from './Slices/CreateBlogSlice.jsx'
 import loginSlice from './Slices/loginSlice.jsx'
+import { BrowserRouter } from 'react-router'
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,8 @@ const store = configureStore({
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>,
 )

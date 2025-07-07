@@ -14,6 +14,7 @@ import { createNewUser } from './services/user.js'
 import { setNewBlog, clearNewBlog } from './Slices/CreateBlogSlice.jsx'
 import { setLoginCredentials, clearLoginCredentials } from './Slices/loginSlice.jsx'
 import { Users } from './components/Users.jsx'
+import { Link } from 'react-router'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -214,9 +215,9 @@ const App = () => {
   const handleShowUsers = () => {
     setShowUsers(!showUsers)
     //timer to reset state//
-    setTimeout(() => {
-      setShowUsers(false)
-    }, 15000)
+    // setTimeout(() => {
+    //   setShowUsers(false)
+    // }, 15000)
 
   }
 
