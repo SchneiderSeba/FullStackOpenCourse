@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
+import { Post } from './Post.jsx'
 
 export const UniqueUser = ({ user, viewDetailsId, setViewDetailsId }) => {
 
@@ -24,15 +25,17 @@ export const UniqueUser = ({ user, viewDetailsId, setViewDetailsId }) => {
         <div style={{ marginTop: '5px', padding: '5px', border: '1px solid #ccc', borderRadius: '5px' }}>
           <ul style={{ listStyleType: 'none', padding: 0 }}>
             {user.blogs.map(blog => (
-              <Link
-                key={blog._id || blog.id}
-                to={`/users/${user._id}`}
-                style={{ textDecoration: 'none', color: 'inherit' }}
-              >
-                <li style={{ marginTop: '5px', padding: '5px', border: '1px solid #ccc', borderRadius: '5px' }}>
-                  <span style={{ color: 'lightBlue' }}>{blog.title}</span>
-                </li>
-              </Link>
+              <>
+                <Link
+                  key={blog._id || blog.id}
+                  to={`/posts/${blog._id || blog.id}`}
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                >
+                  <li style={{ marginTop: '5px', padding: '5px', border: '1px solid #ccc', borderRadius: '5px' }}>
+                    <span style={{ color: 'lightBlue' }}>{blog.title}</span>
+                  </li>
+                </Link>
+              </>
             ))}
           </ul>
         </div>

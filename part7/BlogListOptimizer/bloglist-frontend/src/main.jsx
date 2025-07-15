@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import notificationReducer from './Slices/NotificationSlice.jsx'
 import createBlogReducer from './Slices/CreateBlogSlice.jsx'
 import loginSlice from './Slices/loginSlice.jsx'
-import { BrowserRouter } from 'react-router'
+import { BrowserRouter } from 'react-router-dom'
 
 const store = configureStore({
   reducer: {

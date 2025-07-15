@@ -23,7 +23,7 @@ export const Users = ({ showUsers, handleShowUsers, blogs }) => {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <button style={{ marginBottom: '20px', backgroundColor: 'green' }} onClick={() => handleShowUsers()}>
+        <button style={{ marginBottom: '20px', backgroundColor: 'transparent', border: 'solid 1px green' }} onClick={() => handleShowUsers()}>
           {showUsers ? 'Hide ➖' : 'Users Info ➕'}
         </button>
       </div>

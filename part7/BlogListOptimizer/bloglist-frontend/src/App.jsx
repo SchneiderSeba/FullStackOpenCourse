@@ -14,7 +14,8 @@ import { createNewUser } from './services/user.js'
 import { setNewBlog, clearNewBlog } from './Slices/CreateBlogSlice.jsx'
 import { setLoginCredentials, clearLoginCredentials } from './Slices/loginSlice.jsx'
 import { Users } from './components/Users.jsx'
-import { Link } from 'react-router'
+import { Post } from './components/Post.jsx'
+import { Route, Routes } from 'react-router-dom'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -166,6 +167,20 @@ const App = () => {
     }
   }
 
+  const handleUpdateLikes = async (id) => {
+    const blog = blogs.find(blog => blog.id === id || blog._id === id)
+    if (!blog) return
+    const updatedBlog = { ...blog, likes: blog.likes + 1 }
+    const returnedBlog = await updateBlog(id, updatedBlog)
+    setBlogs(blogs.map((blog) => (blog.id === id || blog._id === id) ? returnedBlog : blog))
+    setNewLikes(returnedBlog.likes)
+    dispatch(setNotification({ message: 'Like 👍🏼', type: 'success' }))
+    setTimeout(() => {
+      dispatch(clearNotification())
+    }, 3000)
+    setRefresher(!refresher)
+  }
+
   const handleDeleteBlog = async (_id, user) => {
     if (!window.confirm('Are you sure you want to delete this blog?')) return
 
@@ -223,41 +238,42 @@ const App = () => {
 
   return (
     <>
-      <h1>Blogs Website</h1>
-
-      <Notification />
-
-      {/* {errorMessage && <Notification message={errorMessage} type="error" />}
-
-      {blogAdded && <Notification message={blogAdded} type="success" />} */}
-
-      {user !== null && <LoggedUser user={user} setUser={setUser} />}
-
-      {user !== null && (
-        <ToggleBtn
-          handleToggle={handleToggle}
-          showCreateForm={showCreateForm}
+      <Routes>
+        <Route path="/posts/:id" element={<>
+          <Notification />
+          <Post blogs={blogs} updateLikes={handleUpdateLikes} />
+        </>} />
+        <Route path="/*"
+          element={
+            <>
+              <h1>Blogs Website</h1>
+              <Notification />
+              {user !== null && <LoggedUser user={user} setUser={setUser} />}
+              {user !== null && (
+                <ToggleBtn
+                  handleToggle={handleToggle}
+                  showCreateForm={showCreateForm}
+                />
+              )}
+              {showCreateForm && <FormNewBlog handleCreateBlog={handleCreateBlog} />}
+              {user && <Users handleShowUsers={handleShowUsers} showUsers={showUsers} user={user} blogs={blogs} />}
+              {user === null ? (
+                <LoginForm handleLogin={handleLogin} handleSignUp={handleSignUp} />
+              ) : (
+                <BlogSection
+                  blogs={blogs}
+                  viewContent={viewContent}
+                  handleView={handleView}
+                  handleUpdateBlog={handleUpdateBlog}
+                  handleDeleteBlog={handleDeleteBlog}
+                  user={user}
+                />
+              )}
+              {user !== null && <Footer user={user} />}
+            </>
+          }
         />
-      )}
-
-      {showCreateForm && <FormNewBlog handleCreateBlog={handleCreateBlog} />}
-
-      {user && <Users handleShowUsers={handleShowUsers} showUsers={showUsers} user={user} blogs={blogs} />}
-
-      {user === null ? (
-        <LoginForm handleLogin={handleLogin} handleSignUp={handleSignUp} />
-      ) : (
-        <BlogSection
-          blogs={blogs}
-          viewContent={viewContent}
-          handleView={handleView}
-          handleUpdateBlog={handleUpdateBlog}
-          handleDeleteBlog={handleDeleteBlog}
-          user={user}
-        />
-      )}
-
-      {user !== null && <Footer user={user} />}
+      </Routes>
     </>
   )
 }
