@@ -15,7 +15,9 @@ import { setNewBlog, clearNewBlog } from './Slices/CreateBlogSlice.jsx'
 import { setLoginCredentials, clearLoginCredentials } from './Slices/loginSlice.jsx'
 import { Users } from './components/Users.jsx'
 import { Post } from './components/Post.jsx'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
+import { NavBar } from './components/NavBar.jsx'
+import { Blog } from './components/Blog.jsx'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -239,10 +241,31 @@ const App = () => {
   return (
     <>
       <Routes>
+
         <Route path="/posts/:id" element={<>
-          <Notification />
           <Post blogs={blogs} updateLikes={handleUpdateLikes} />
+          <Notification />
         </>} />
+
+        <Route path="/blogs" element={<>
+          <Notification />
+          <BlogSection
+            blogs={blogs}
+            viewContent={viewContent}
+            handleView={handleView}
+            handleUpdateBlog={handleUpdateBlog}
+            handleDeleteBlog={handleDeleteBlog}
+            user={user}
+          />
+          <Footer user={user} />
+        </>} />
+
+        <Route path="/users" element={<>
+          <Notification />
+          {user !== null && <Users handleShowUsers={handleShowUsers} showUsers={true} user={user} blogs={blogs} />}
+          <Footer user={user} />
+        </>} />
+
         <Route path="/*"
           element={
             <>

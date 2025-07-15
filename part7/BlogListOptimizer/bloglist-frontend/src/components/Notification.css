@@ -6,16 +6,18 @@
   background-color: lightcoral;
   border-radius: 5px;
   text-align: center;
+  box-shadow: 0 6px 12px rgba(204, 11, 11, 0.582);
 }
 
 .success {
-  color: green;
-  border: 1px solid green;
+  color: lightgreen;
+  border: 1.5px solid lightgreen;
   padding: 10px;
   margin: 10px 0;
-  background-color: lightgreen;
+  background-color: transparent;
   border-radius: 5px;
   text-align: center;
+  box-shadow: 0 6px 12px rgba(9, 255, 0, 0.486);
 }
 
 .before {

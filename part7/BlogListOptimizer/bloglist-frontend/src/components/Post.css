@@ -1,0 +1,59 @@
+
+/* .Post {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.Post:hover {
+    background-color: #f9f9f913;
+    box-shadow: 0 12px 24px rgba(16, 103, 218, 0.404);
+} */
+
+.post-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+   /* Opcional: fondo de la página */
+}
+
+.Post {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0; /* Quitar margin ya que el wrapper se encarga del espaciado */
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: transparent;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+}
+
+.Post:hover {
+  background-color: #f9f9f91a;
+  box-shadow: 0 12px 24px rgba(16, 103, 218, 0.404);
+  transform: translateY(-2px); /* Efecto de elevación al hover */
+  transition: all 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .post-wrapper {
+    padding: 10px;
+  }
+  
+  .Post {
+    padding: 20px;
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,16 @@
+
+.nav-link > button {
+
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+  
+}
+
+.nav-link > button:hover {
+    box-shadow: 0 6px 12px rgba(16, 103, 218, 0.404);
+    background-color: transparent;
+}
