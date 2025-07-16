@@ -19,6 +19,8 @@ import { Post } from './components/Post.jsx'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import { NavBar } from './components/NavBar.jsx'
 import { Blog } from './components/Blog.jsx'
+// import 'bootstrap/dist/css/bootstrap.min.css'
+import './App.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -307,7 +309,7 @@ const App = () => {
         <Route path="/*"
           element={
             <>
-              <h1>Blogs Website</h1>
+              <h1 style={{ fontSize: '2rem', marginTop: '20px' }}>Blogs Website</h1>
               <Notification />
               {user !== null && <LoggedUser user={user} setUser={setUser} />}
               {user !== null && (

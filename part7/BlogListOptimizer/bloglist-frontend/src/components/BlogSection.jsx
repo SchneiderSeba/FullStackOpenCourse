@@ -66,7 +66,7 @@ export const FormNewBlog = ({ handleCreateBlog }) => {
 
   return (
     <form onSubmit={onSubmit}>
-      <div className="createForm">
+      <div className="createFormOn">
         <h2>Create new blog</h2>
         <input
           data-testid="title"
@@ -92,7 +92,7 @@ export const FormNewBlog = ({ handleCreateBlog }) => {
           onChange={handleNewBlog}
           placeholder="URL"
         />
-        <button type="submit">Create</button>
+        <button type="submit" className='createBtn'>Create</button>
       </div>
     </form>
   )

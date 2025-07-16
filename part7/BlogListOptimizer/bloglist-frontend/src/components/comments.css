@@ -42,3 +42,30 @@
   font-style: italic;
   margin-top: 10px;
 }
+
+.comments form {
+  display: flex;
+  gap: 10px;
+}
+
+.comments input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 93%; /* Asegura que el input ocupe todo el espacio disponible */
+  /* Elimina width: 100% y margin-left */
+}
+
+.comments button[type="submit"] {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 1px solid #007bff;
+  background-color: transparent;
+  color: #007bff;
+  font-size: 1rem;
+  height: 40px; /* Igual que el input */
+  /* Puedes ajustar el height según el padding del input */
+}

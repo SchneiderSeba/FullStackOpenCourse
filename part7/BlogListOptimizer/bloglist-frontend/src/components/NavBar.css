@@ -1,13 +1,46 @@
+nav {
+    background-color: transparent;
+    padding: 10px;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0;
+}
 
-.nav-link > button {
+nav .A {
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* centra horizontalmente */
+    align-items: center;     /* centra verticalmente */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 !important;
+    padding: 0 !important;      /* Bordes redondeados */
+}
 
+nav .B {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center;
+    height: 100%;
     margin-top: 10px;
-    padding: 5px 10px;
+}
+
+
+/* NavBar.css */
+.nav-link > button {
+    display: flex;              /* Cambia de inline-block a flex */
+    align-items: center;        /* Centra verticalmente texto e icono */
+    gap: 6px;                   /* Espacio entre texto e icono */
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
     background-color: transparent;
     color: #fff;
     border: 1px solid #007bff;
     border-radius: 5px;
-  
 }
 
 .nav-link > button:hover {
