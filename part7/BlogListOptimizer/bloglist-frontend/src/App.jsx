@@ -11,6 +11,7 @@ import { Footer } from './Footer.jsx'
 import { Notification } from './components/Notification.jsx'
 import { ToggleBtn } from './components/ToggleBtn.jsx'
 import { createNewUser } from './services/user.js'
+import { getAllUsers } from './services/user.js'
 import { setNewBlog, clearNewBlog } from './Slices/CreateBlogSlice.jsx'
 import { setLoginCredentials, clearLoginCredentials } from './Slices/loginSlice.jsx'
 import { Users } from './components/Users.jsx'
@@ -32,6 +33,17 @@ const App = () => {
   const notification = useSelector((state) => state.notification)
   const { message, type } = notification
   const [showUsers, setShowUsers] = useState(false)
+  const [allUsers, setAllUsers] = useState([])
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const users = await getAllUsers()
+      console.log('Usuarios recibidos:', users)
+      setAllUsers(users)
+      console.log('All users state updated:', allUsers)
+    }
+    fetchUsers()
+  }, [])
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -54,10 +66,11 @@ const App = () => {
       setUser(null)
       console.log('Token eliminado, usuario deslogueado')
       setRefresher(!refresher)
-    }, 1000 * 60)
+    }, 10000 * 60)
 
     return () => clearTimeout(timeoutId)
   }, [])
+
 
   const handleLogin = async (username, password, id) => {
     try {
@@ -84,7 +97,7 @@ const App = () => {
       setTimeout(() => {
         dispatch(clearLoginCredentials())
         dispatch(clearNotification())
-      }, 3000)
+      }, 300000)
     }
     console.log('logging in with', username, password)
   }
@@ -221,6 +234,31 @@ const App = () => {
     }
   }
 
+  const handleComments = (id, comment, user, commentAuthor) => {
+    console.log('El Usuario : ', user)
+    const blog = blogs.find(blog => blog.id === id || blog._id === id)
+    if (!blog) return
+    const newComment = { comment, commentAuthor }
+    const updatedBlog = { ...blog, comments: blog.comments ? blog.comments.concat(newComment) : [newComment] }
+    updateBlog(id, updatedBlog)
+      .then(returnedBlog => {
+        setBlogs(blogs.map((blog) => (blog.id === id || blog._id === id) ? returnedBlog : blog))
+        setRefresher(!refresher)
+        dispatch(setNotification({ message: 'Comment added', type: 'success' }))
+        setTimeout(() => {
+          dispatch(clearNotification())
+        }, 3000)
+      }).catch(error => {
+        console.error('Error adding comment:', error)
+        dispatch(setNotification({ message: 'Error adding comment', type: 'error' }))
+        setTimeout(() => {
+          dispatch(clearNotification())
+        }, 3000)
+      })
+
+    console.log(updatedBlog)
+  }
+
   const handleToggle = () => {
     setShowCreateForm(!showCreateForm)
   }
@@ -243,7 +281,7 @@ const App = () => {
       <Routes>
 
         <Route path="/posts/:id" element={<>
-          <Post blogs={blogs} updateLikes={handleUpdateLikes} />
+          <Post blogs={blogs} updateLikes={handleUpdateLikes} handleComment={handleComments} allUsers={allUsers} user={user} />
           <Notification />
         </>} />
 
@@ -262,7 +300,7 @@ const App = () => {
 
         <Route path="/users" element={<>
           <Notification />
-          {user !== null && <Users handleShowUsers={handleShowUsers} showUsers={true} user={user} blogs={blogs} />}
+          {user !== null && <Users handleShowUsers={handleShowUsers} showUsers={true} user={user} blogs={blogs} allUsers={allUsers} />}
           <Footer user={user} />
         </>} />
 
@@ -279,7 +317,7 @@ const App = () => {
                 />
               )}
               {showCreateForm && <FormNewBlog handleCreateBlog={handleCreateBlog} />}
-              {user && <Users handleShowUsers={handleShowUsers} showUsers={showUsers} user={user} blogs={blogs} />}
+              {user && <Users handleShowUsers={handleShowUsers} showUsers={showUsers} user={user} blogs={blogs} allUsers={allUsers} />}
               {user === null ? (
                 <LoginForm handleLogin={handleLogin} handleSignUp={handleSignUp} />
               ) : (

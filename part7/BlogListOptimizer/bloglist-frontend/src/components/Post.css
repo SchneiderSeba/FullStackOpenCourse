@@ -29,7 +29,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0; /* Quitar margin ya que el wrapper se encarga del espaciado */
+  margin-bottom: 20px; /* Quitar margin ya que el wrapper se encarga del espaciado */
   padding: 30px;
   border: 1px solid #ccc;
   border-radius: 10px;

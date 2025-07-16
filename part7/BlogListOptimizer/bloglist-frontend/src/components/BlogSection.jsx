@@ -34,7 +34,7 @@ BlogSection.propTypes = {
   handleView: PropTypes.func.isRequired,
   handleUpdateBlog: PropTypes.func.isRequired,
   handleDeleteBlog: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
+  user: PropTypes.object,
 }
 
 export const ShowCreateBlog = ({ showCreateForm }) => {
